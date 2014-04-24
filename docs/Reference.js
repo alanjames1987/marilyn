@@ -1,0 +1,71 @@
+// set - also returns the model
+var marilynModel = Marilyn.model('modelName', function(){
+
+	// "this" represents the model
+
+	// SOCKET.IO abstraction
+
+	// listen for event from server
+	this.on('socketIOEventFromServer', function(data){
+
+		// the model can dispatch events 
+		this.inform('customEvent', data);
+
+	});
+
+	// MONGOOSE abstraction
+
+	// get the collection
+	// the collection is the data held within the model
+	// this data can be directly manipulated
+	// when the data changes four automatic events can be dispatched
+	// create, update, delete, change
+	this.collection;
+
+	// schema
+	this.schema({
+		// "this" represents the schema
+		// "this.property" are other properties of the schema
+	});
+
+	// pre and post are passed data that has been altered during the event
+	// before
+	this.pre('event', function(data){
+		// "this" represents the model
+	});
+
+	// after
+	this.post('event', function(data){
+		// "this" represents the model
+	});
+
+	// pre and post are useful for syncing socket data
+	this.post('create', function(data){
+		this.emit('socketIOEventFromClient', data);
+	});
+	this.post('update', function(data){
+		this.emit('socketIOEventFromClient', data);
+	});
+	this.post('delete', function(data){
+		this.emit('socketIOEventFromClient', data);
+	});
+
+});
+
+// get
+var marilynModel = Marilyn.model('modelName');
+
+// query
+// in all of these "this" represents the model
+marilynModel.create({}, function(err, results){});
+marilynModel.read({}, function(err, results){});
+marilynModel.readOne({}, function(err, results){});
+marilynModel.update({}, function(err, results){});
+marilynModel.delete({}, function(err, results){});
+
+// events
+marilynModel.receive('create', function(collection, createdElement){});
+marilynModel.receive('update', function(collection, updatedElement, oldUpdatedElement){});
+marilynModel.receive('delete', function(collection, deleteElement){});
+marilynModel.receive('change', function(collection, oldCollection){});
+marilynModel.receive('customEvent', function(data){});
