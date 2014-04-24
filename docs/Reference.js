@@ -8,9 +8,24 @@ var marilynModel = Marilyn.model('modelName', function(){
 	// listen for event from server
 	this.on('socketIOEventFromServer', function(data){
 
+		this.create({}, function(err, results){
+
+		});
+
+		this.update({}, function(err, results){
+
+		});
+
+		this.delete({}, function(err, results){
+
+		});
+
+	});
+
+
+	this.on('socketIOEventFromServer', function(data){
 		// the model can dispatch events 
 		this.inform('customEvent', data);
-
 	});
 
 	// MONGOOSE abstraction
@@ -28,25 +43,30 @@ var marilynModel = Marilyn.model('modelName', function(){
 		// "this.property" are other properties of the schema
 	});
 
-	// pre and post are passed data that has been altered during the event
-	// before
-	this.pre('event', function(data){
+	// events
+	this.before('event', function(callback{
+		// "this" represents the model
+		callback();
+	});
+
+	this.before('event', function(){
 		// "this" represents the model
 	});
 
-	// after
-	this.post('event', function(data){
-		// "this" represents the model
+	// before and after are useful for syncing socket data
+	this.after('create', function(data){
+		this.emit('socketIOEventFromClient', data);
 	});
 
-	// pre and post are useful for syncing socket data
-	this.post('create', function(data){
+	this.after('update', function(data){
 		this.emit('socketIOEventFromClient', data);
 	});
-	this.post('update', function(data){
+
+	this.after('delete', function(data){
 		this.emit('socketIOEventFromClient', data);
 	});
-	this.post('delete', function(data){
+
+	this.after('customEvent', function(data){
 		this.emit('socketIOEventFromClient', data);
 	});
 
