@@ -49,25 +49,30 @@ var marilynModel = Marilyn.model('modelName', function(){
 		callback();
 	});
 
-	this.before('event', function(){
+	this.after('event', function(callback){
 		// "this" represents the model
+		callback();
 	});
 
 	// before and after are useful for syncing socket data
-	this.after('create', function(data){
+	this.after('create', function(callback, data){
 		this.emit('socketIOEventFromClient', data);
+		callback();
 	});
 
-	this.after('update', function(data){
+	this.after('update', function(callback, data){
 		this.emit('socketIOEventFromClient', data);
+		callback();
 	});
 
-	this.after('delete', function(data){
+	this.after('delete', function(callback, data){
 		this.emit('socketIOEventFromClient', data);
+		callback();
 	});
 
-	this.after('customEvent', function(data){
+	this.after('customEvent', function(callback, data){
 		this.emit('socketIOEventFromClient', data);
+		callback();
 	});
 
 });
