@@ -16,7 +16,7 @@ var marilynModel = Marilyn.model('modelName', function(){
 
 		});
 
-		this.delete({}, function(err, results){
+		this.remove({}, function(err, results){
 
 		});
 
@@ -34,7 +34,7 @@ var marilynModel = Marilyn.model('modelName', function(){
 	// the collection is the data held within the model
 	// this data can be directly manipulated
 	// when the data changes four automatic events can be dispatched
-	// create, update, delete, change
+	// create, update, remove, change
 	this.collection;
 
 	// schema
@@ -44,7 +44,7 @@ var marilynModel = Marilyn.model('modelName', function(){
 	});
 
 	// events
-	this.before('event', function(callback{
+	this.before('event', function(callback){
 		// "this" represents the model
 		callback();
 	});
@@ -65,7 +65,7 @@ var marilynModel = Marilyn.model('modelName', function(){
 		callback();
 	});
 
-	this.after('delete', function(callback, data){
+	this.after('remove', function(callback, data){
 		this.emit('socketIOEventFromClient', data);
 		callback();
 	});
@@ -86,11 +86,11 @@ marilynModel.create({}, function(err, results){});
 marilynModel.read({}, function(err, results){});
 marilynModel.readOne({}, function(err, results){});
 marilynModel.update({}, function(err, results){});
-marilynModel.delete({}, function(err, results){});
+marilynModel.remove({}, function(err, results){});
 
 // events
 marilynModel.receive('create', function(collection, createdElement){});
 marilynModel.receive('update', function(collection, updatedElement, oldUpdatedElement){});
-marilynModel.receive('delete', function(collection, deleteElement){});
+marilynModel.receive('remove', function(collection, removedElement){});
 marilynModel.receive('change', function(collection, oldCollection){});
 marilynModel.receive('customEvent', function(data){});
