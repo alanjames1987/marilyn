@@ -18,7 +18,6 @@
 		// setup the private variables of the model
 		// collection will store all the data in the model
 		model._collection = [];
-		model._schema = {};
 
 		model._befores = {};
 		model._afters = {};
@@ -27,10 +26,6 @@
 
 		// this is a variable that will be overrided each time scope needs to be retained
 		model._retainScope;
-
-		model._validate = function() {
-
-		};
 
 		// Socket.IO events
 
@@ -73,10 +68,6 @@
 		};
 
 		// query methods
-
-		model.schema = function(schema) {
-			model._schema = schema;
-		};
 
 		model.create = function(element, callback) {
 
