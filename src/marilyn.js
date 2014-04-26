@@ -17,18 +17,14 @@
 		// collection will store all the data in the model
 		model._collection = [];
 		model._schema = {};
-		model._receivers = {};
+
 		model._befores = {};
 		model._afters = {};
 
+		model._receivers = {};
+
 		// this is a variable that will be overrided each time scope needs to be retained
 		model._retainScope;
-
-		// setup the schema
-
-		model.schema = function(schema) {
-			model._schema = schema;
-		};
 
 		// Socket.IO events
 
@@ -51,6 +47,14 @@
 
 		// internal events
 
+		model.before = function(eventType, callback){
+			this._befores[eventType] = callback;
+		};
+
+		model.after = function(eventType, callback){
+			this._afters[eventType] = callback;
+		};
+
 		model.inform = function(eventType, data) {
 			if (this._receivers[eventType]) {
 				this._retainScope = this._receivers[eventType];
@@ -64,14 +68,32 @@
 
 		// query methods
 
+		model.schema = function(schema) {
+			model._schema = schema;
+		};
+
 		model.create = function(element, callback) {
 
-			this._collection.push(element);
+			if(this._befores.hasOwnProperty('create')){
+				this._befores['create'](function(){
+					runComplete();
+				})
+			}else{
+				runComplete();
+			}
 
-			this.inform('create', element);
+			function runComplete(){
 
-			if (callback) {
-				callback(null, element);
+				// check if the element matches the schema
+
+				model._collection.push(element);
+
+				model.inform('create', element);
+
+				if (callback) {
+					callback(null, element);
+				}
+
 			}
 
 		};
@@ -117,53 +139,77 @@
 
 		model.update = function(query, changes, callback) {
 
-			var err = null;
-			var results = _.where(this._collection, query);
-
-			if(results){
-
-				_.each(results, function(element){
-
-					_.each(changes, function(value, key) {
-						element[key] = value;
-					});
-
-				});
-
-				this.inform('update', results);
-
+			if(this._befores.hasOwnProperty('update')){
+				this._befores['update'](function(){
+					runComplete();
+				})
 			}else{
-				err = 'item not found';
+				runComplete();
 			}
 
-			if (callback) {
-				callback(err, results);
+			function runComplete(){
+
+				var err = null;
+				var results = _.where(this._collection, query);
+
+				if(results){
+
+					_.each(results, function(element){
+
+						_.each(changes, function(value, key) {
+							element[key] = value;
+						});
+
+					});
+
+					this.inform('update', results);
+
+				}else{
+					err = 'item not found';
+				}
+
+				if (callback) {
+					callback(err, results);
+				}
+
 			}
 
 		};
 
-		model.remove = function(query, callback) {
+		model.delete = function(query, callback) {
 
-			var err = null;
-			var results = _.where(this._collection, query);
-
-			if(results){
-
-				_.each(results, function(element){
-
-					var index = _.indexOf(model._collection, element);
-					model._collection.splice(index, 1)
-
+			if(this._befores.hasOwnProperty('delete')){
+				this._befores['delete'](function(){
+					runComplete();
 				});
-
-				this.inform('remove', results);
-
 			}else{
-				err = 'item not found';
+				runComplete();
 			}
 
-			if (callback) {
-				callback(err, results);
+			function runComplete(){
+
+				var err = null;
+				var results = _.where(this._collection, query);
+
+				if(results){
+
+					_.each(results, function(element){
+
+						var index = _.indexOf(model._collection, element);
+						model._collection.splice(index, 1)
+
+					});
+
+					model.inform('remove', results);
+
+				}else{
+					err = 'item not found';
+				}
+
+				if (callback) {
+					callback(err, results);
+				}
+
 			}
 
 		};

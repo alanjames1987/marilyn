@@ -37,6 +37,10 @@
 					console.log(data);
 				});
 
+				this.after('delete', function(callback){
+					callback();
+				});
+
 			});
 
 			var model = Marilyn.model('something');
@@ -49,16 +53,16 @@
 
 			function test(){
 
-				// model.remove({'test':'test1'}, function(err, results){
-				// 	console.log(err);
-				// 	console.log(results);
+				model.delete({'test':'test1'}, function(err, results){
+					// console.log(err);
+					// console.log(results);
 
-				// 	model.read(function(err, results){
-				// 		console.log(err);
-				// 		console.log(results);
-				// 	});
+					// model.read(function(err, results){
+					// 	console.log(err);
+					// 	console.log(results);
+					// });
 
-				// });
+				});
 
 			}
 
