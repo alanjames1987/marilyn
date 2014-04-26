@@ -1,0 +1,18 @@
+{
+  "name": "test-marilyn",
+  "version": "0.0.1",
+  "authors": [
+    {
+      "name": "Alan James",
+      "email": "alanjames1987@gmail.com"
+    }
+  ],
+  "dependencies": {
+    "socket.io": "0.9.16"
+  },
+  "devDependencies": {
+    "mocha": "1.15.1",
+    "should": "2.1.1",
+    "supertest": "0.8.2"
+  }
+}

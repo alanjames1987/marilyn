@@ -1,3 +1,5 @@
+Marilyn.config(socketConnection);
+
 // set - also returns the model
 var marilynModel = Marilyn.model('modelName', function(){
 
@@ -22,8 +24,8 @@ var marilynModel = Marilyn.model('modelName', function(){
 
 	});
 
-
 	this.on('socketIOEventFromServer', function(data){
+		// "this" represents the model
 		// the model can dispatch events 
 		this.inform('customEvent', data);
 	});
@@ -85,12 +87,11 @@ var marilynModel = Marilyn.model('modelName');
 marilynModel.create({}, function(err, results){});
 marilynModel.read({}, function(err, results){});
 marilynModel.readOne({}, function(err, results){});
-marilynModel.update({}, function(err, results){});
+marilynModel.update({}, {}, function(err, results){});
 marilynModel.remove({}, function(err, results){});
 
 // events
 marilynModel.receive('create', function(collection, createdElement){});
-marilynModel.receive('update', function(collection, updatedElement, oldUpdatedElement){});
+marilynModel.receive('update', function(collection, updatedElements, oldUpdatedElements){});
 marilynModel.receive('remove', function(collection, removedElement){});
-marilynModel.receive('change', function(collection, oldCollection){});
 marilynModel.receive('customEvent', function(data){});

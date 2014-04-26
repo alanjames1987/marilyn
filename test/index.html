@@ -1,0 +1,69 @@
+<html>
+
+	<head>
+		<title>Testing Marylin</title>
+	</head>
+
+	<body>
+		<script src="bower_components/lodash/dist/lodash.js"></script>
+		<script src="../src/marilyn.js"></script>
+		<script src="http://localhost:3002/socket.io/socket.io.js"></script>
+		<script>
+			var socketConnection = io.connect('http://localhost:3002'); 
+		</script>
+
+		<script>
+
+			Marilyn.config(socketConnection);
+
+			Marilyn.model('something', function(){
+
+				this.receive('create', function(data){
+					console.log(this);
+					console.log(data);
+					// console.log('create receive');
+					// console.log(data);
+				});
+
+				this.receive('remove', function(data){
+					console.log(this);
+					console.log(data);
+					// console.log('remove receive');
+					// console.log(data);
+				});
+
+				this.on('news', function (data) {
+					console.log(this);
+					console.log(data);
+				});
+
+			});
+
+			var model = Marilyn.model('something');
+
+			for (var i = 1, j = 11; i < j; i++) {
+				model.create({
+					'test' : 'test' + i
+				});
+			}
+
+			function test(){
+
+				// model.remove({'test':'test1'}, function(err, results){
+				// 	console.log(err);
+				// 	console.log(results);
+
+				// 	model.read(function(err, results){
+				// 		console.log(err);
+				// 		console.log(results);
+				// 	});
+
+				// });
+
+			}
+
+		</script>
+
+	</body>
+
+</html>

@@ -1,0 +1,13 @@
+{
+  "name": "test-marilyn",
+  "version": "0.0.1",
+  "authors": [
+    {
+      "name": "Alan James",
+      "email": "alanjames1987@gmail.com"
+    }
+  ],
+  "dependencies": {
+    "lodash": "~2.4.1"
+  }
+}
