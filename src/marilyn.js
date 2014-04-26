@@ -3,9 +3,11 @@
 	// _socketConnection should be shared between all the models
 	// it's a single connection to the server
 	var _socketConnection;
+
+	// the is where all the models will be stored so getters can be used to retrieve them
 	var _models = {};
 
-	function _modelGet(modelName){
+	function _modelGet(modelName) {
 		return _models[modelName];
 	};
 
@@ -26,12 +28,16 @@
 		// this is a variable that will be overrided each time scope needs to be retained
 		model._retainScope;
 
+		model._validate = function() {
+
+		};
+
 		// Socket.IO events
 
-		model.on = function(eventType, callback){
+		model.on = function(eventType, callback) {
 
 			if (_socketConnection) {
-				_socketConnection.on(eventType, function(data){
+				_socketConnection.on(eventType, function(data) {
 					model._retainScope = callback;
 					model._retainScope(data);
 				});
@@ -39,7 +45,7 @@
 
 		};
 
-		model.emit = function(eventType, data){
+		model.emit = function(eventType, data) {
 			if (_socketConnection) {
 				_socketConnection.emit(eventType, data);
 			}
@@ -47,11 +53,11 @@
 
 		// internal events
 
-		model.before = function(eventType, callback){
+		model.before = function(eventType, callback) {
 			this._befores[eventType] = callback;
 		};
 
-		model.after = function(eventType, callback){
+		model.after = function(eventType, callback) {
 			this._afters[eventType] = callback;
 		};
 
@@ -74,15 +80,15 @@
 
 		model.create = function(element, callback) {
 
-			if(this._befores.hasOwnProperty('create')){
-				this._befores['create'](function(){
+			if (this._befores.hasOwnProperty('create')) {
+				this._befores['create'](function() {
 					runComplete();
-				})
-			}else{
+				});
+			} else {
 				runComplete();
 			}
 
-			function runComplete(){
+			function runComplete() {
 
 				// check if the element matches the schema
 
@@ -94,6 +100,10 @@
 					callback(null, element);
 				}
 
+				if (model._afters.hasOwnProperty('create')) {
+					model._afters['create']();
+				}
+
 			}
 
 		};
@@ -103,21 +113,21 @@
 			var readAll = false;
 
 			// if no query was passed
-			if(typeof query === 'function'){
+			if ( typeof query === 'function') {
 				callback = query;
 				readAll = true;
 			}
 
 			// or if the query object was empty
-			else if(_.isEmpty(query)){
+			else if (_.isEmpty(query)) {
 				readAll = true;
 			}
 
 			var results = [];
 
-			if(readAll){
+			if (readAll) {
 				results = this._collection;
-			}else{
+			} else {
 				results = _.where(this._collection, query);
 			}
 
@@ -139,22 +149,22 @@
 
 		model.update = function(query, changes, callback) {
 
-			if(this._befores.hasOwnProperty('update')){
-				this._befores['update'](function(){
+			if (this._befores.hasOwnProperty('update')) {
+				this._befores['update'](function() {
 					runComplete();
-				})
-			}else{
+				});
+			} else {
 				runComplete();
 			}
 
-			function runComplete(){
+			function runComplete() {
 
 				var err = null;
 				var results = _.where(this._collection, query);
 
-				if(results){
+				if (results) {
 
-					_.each(results, function(element){
+					_.each(results, function(element) {
 
 						_.each(changes, function(value, key) {
 							element[key] = value;
@@ -164,12 +174,16 @@
 
 					this.inform('update', results);
 
-				}else{
+				} else {
 					err = 'item not found';
 				}
 
 				if (callback) {
 					callback(err, results);
+				}
+
+				if (model._afters.hasOwnProperty('update')) {
+					model._afters['update']();
 				}
 
 			}
@@ -178,36 +192,40 @@
 
 		model.delete = function(query, callback) {
 
-			if(this._befores.hasOwnProperty('delete')){
-				this._befores['delete'](function(){
+			if (this._befores.hasOwnProperty('delete')) {
+				this._befores['delete'](function() {
 					runComplete();
 				});
-			}else{
+			} else {
 				runComplete();
 			}
 
-			function runComplete(){
+			function runComplete() {
 
 				var err = null;
 				var results = _.where(this._collection, query);
 
-				if(results){
+				if (results) {
 
-					_.each(results, function(element){
+					_.each(results, function(element) {
 
 						var index = _.indexOf(model._collection, element);
-						model._collection.splice(index, 1)
+						model._collection.splice(index, 1);
 
 					});
 
-					model.inform('remove', results);
+					model.inform('delete', results);
 
-				}else{
+				} else {
 					err = 'item not found';
 				}
 
 				if (callback) {
 					callback(err, results);
+				}
+
+				if (model._afters.hasOwnProperty('delete')) {
+					model._afters['delete']();
 				}
 
 			}
@@ -221,7 +239,7 @@
 			model.init = init;
 			model.init();
 
-			// remove the init function as it should only run once
+			// delete the init function as it should only run once
 			delete model.init;
 
 		}
@@ -237,10 +255,10 @@
 		_socketConnection = socketConnection;
 	};
 
-	Marilyn.model =  function(modelName, init) {
-		if(_models[modelName]){
+	Marilyn.model = function(modelName, init) {
+		if (_models[modelName]) {
 			return _modelGet(modelName);
-		}else{
+		} else {
 			return _modelSet(modelName, init);
 		}
 	};

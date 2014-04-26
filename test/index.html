@@ -18,30 +18,32 @@
 
 			Marilyn.model('something', function(){
 
-				this.receive('create', function(data){
-					console.log(this);
-					console.log(data);
-					// console.log('create receive');
-					// console.log(data);
-				});
-
-				this.receive('remove', function(data){
-					console.log(this);
-					console.log(data);
-					// console.log('remove receive');
-					// console.log(data);
-				});
-
 				this.on('news', function (data) {
 					console.log(this);
-					console.log(data);
+					// console.log(data);
+
+					this.inform('somethingCustom', {'test': 'some test'});
+					this.create(data);
+					
+
 				});
 
-				this.after('delete', function(callback){
+				this.before('delete', function(callback){
+					console.log('this ran before the delete');
+					console.log(' I should do validation');
 					callback();
 				});
 
+				this.after('delete', function(callback){
+					console.log('this ran after the delete');
+					console.log(' I should sync with the server');
+				});
+
 			});
+
+
+
+
 
 			var model = Marilyn.model('something');
 
@@ -51,16 +53,25 @@
 				});
 			}
 
+			model.receive('delete', function(data){
+				console.log('this ran after the delete but before the after');
+				console.log(' I should update the view');
+			});
+
+			model.receive('somethingCustom', function(data){
+				
+				console.log(data);
+
+			});
+
 			function test(){
 
 				model.delete({'test':'test1'}, function(err, results){
-					// console.log(err);
-					// console.log(results);
 
-					// model.read(function(err, results){
-					// 	console.log(err);
-					// 	console.log(results);
-					// });
+					model.read(function(err, results){
+						// console.log(err);
+						// console.log(results);
+					});
 
 				});
 
