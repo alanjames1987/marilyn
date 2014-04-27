@@ -49,30 +49,30 @@
 		// internal events
 
 		model.before = function(eventType, callback) {
-			this._befores[eventType] = callback;
+			model._befores[eventType] = callback;
 		};
 
 		model.after = function(eventType, callback) {
-			this._afters[eventType] = callback;
+			model._afters[eventType] = callback;
 		};
 
 		model.inform = function(eventType, data) {
-			if (this._receivers[eventType]) {
-				this._retainScope = this._receivers[eventType];
-				this._retainScope(data);
+			if (model._receivers[eventType]) {
+				model._retainScope = model._receivers[eventType];
+				model._retainScope(data);
 			}
 		};
 
 		model.receive = function(eventType, callback) {
-			this._receivers[eventType] = callback;
+			model._receivers[eventType] = callback;
 		};
 
 		// query methods
 
 		model.create = function(element, callback) {
 
-			if (this._befores.hasOwnProperty('create')) {
-				this._befores['create'](function() {
+			if (model._befores.hasOwnProperty('create')) {
+				model._befores['create'](function() {
 					runComplete();
 				});
 			} else {
@@ -117,9 +117,9 @@
 			var results = [];
 
 			if (readAll) {
-				results = this._collection;
+				results = model._collection;
 			} else {
-				results = _.where(this._collection, query);
+				results = _.where(model._collection, query);
 			}
 
 			if (callback) {
@@ -130,18 +130,28 @@
 
 		model.readOne = function(query, callback) {
 
-			var results = _.find(this._collection, query);
+			var err = null;
+
+			var results = _.where(model._collection, query);
+			
+			var result = null;
+
+			if(results[0]){
+				result = results[0];
+			} else {
+				err = 'item not found';
+			}
 
 			if (callback) {
-				callback(null, results);
+				callback(err, result);
 			}
 
 		};
 
 		model.update = function(query, changes, callback) {
 
-			if (this._befores.hasOwnProperty('update')) {
-				this._befores['update'](function() {
+			if (model._befores.hasOwnProperty('update')) {
+				model._befores['update'](function() {
 					runComplete();
 				});
 			} else {
@@ -151,7 +161,8 @@
 			function runComplete() {
 
 				var err = null;
-				var results = _.where(this._collection, query);
+
+				var results = _.where(model._collection, query);
 
 				if (results) {
 
@@ -163,7 +174,7 @@
 
 					});
 
-					this.inform('update', results);
+					model.inform('update', results);
 
 				} else {
 					err = 'item not found';
@@ -183,8 +194,8 @@
 
 		model.delete = function(query, callback) {
 
-			if (this._befores.hasOwnProperty('delete')) {
-				this._befores['delete'](function() {
+			if (model._befores.hasOwnProperty('delete')) {
+				model._befores['delete'](function() {
 					runComplete();
 				});
 			} else {
@@ -194,7 +205,8 @@
 			function runComplete() {
 
 				var err = null;
-				var results = _.where(this._collection, query);
+
+				var results = _.where(model._collection, query);
 
 				if (results) {
 
