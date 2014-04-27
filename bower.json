@@ -1,5 +1,6 @@
 {
-  "name": "marilynjs",
+  "name": "marilyn",
+  "keywords"      : ["model", "browser"],
   "version": "0.0.1",
   "authors": [
     {
@@ -8,6 +9,6 @@
     }
   ],
   "dependencies": {
-    "lodash": "2.4.1"
+    "underscore": ">=1.5.0"
   }
 }
