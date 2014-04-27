@@ -15,6 +15,8 @@
 
 		var model = _models[modelName] = {};
 
+		model.name = modelName;
+
 		// setup the private variables of the model
 		// collection will store all the data in the model
 		model._collection = [];
