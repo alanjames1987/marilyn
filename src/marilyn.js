@@ -104,6 +104,10 @@
 
 				model.createSilent(element, function(err, results) {
 
+					if (callback) {
+						callback(err, results);
+					}
+
 					if (model._afters.hasOwnProperty('create')) {
 						model._retainScope = model._afters['create'];
 						model._retainScope(element);
@@ -141,6 +145,10 @@
 			function runComplete() {
 
 				model.readSilent(query, function(err, results) {
+
+					if (callback) {
+						callback(err, results);
+					}
 
 					if (model._afters.hasOwnProperty('read')) {
 						model._retainScope = model._afters['read'];
@@ -197,6 +205,10 @@
 
 				model.readOneSilent(query, function(err, results) {
 
+					if (callback) {
+						callback(err, results);
+					}
+
 					if (model._afters.hasOwnProperty('readOne')) {
 						model._retainScope = model._afters['readOne'];
 						model._retainScope(result);
@@ -242,6 +254,10 @@
 			function runComplete() {
 
 				model.updateSilent(query, changes, function(err, results) {
+
+					if (callback) {
+						callback(err, results);
+					}
 
 					if (model._afters.hasOwnProperty('update')) {
 						model._retainScope = model._afters['update'];
@@ -296,6 +312,10 @@
 			function runComplete() {
 
 				model.deleteSilent(query, function(err, results) {
+
+					if (callback) {
+						callback(err, results);
+					}
 
 					if (model._afters.hasOwnProperty('delete')) {
 						model._retainScope = model._afters['delete'];
