@@ -109,8 +109,6 @@
 						model._retainScope(element);
 					}
 
-					callback(err, results);
-
 				});
 
 			}
@@ -148,8 +146,6 @@
 						model._retainScope = model._afters['read'];
 						model._retainScope(results);
 					}
-
-					callback(err, results);
 
 				});
 
@@ -206,8 +202,6 @@
 						model._retainScope(result);
 					}
 
-					callback(err, results);
-
 				});
 
 			}
@@ -253,8 +247,6 @@
 						model._retainScope = model._afters['update'];
 						model._retainScope(results);
 					}
-
-					callback(err, results);
 
 				});
 
@@ -309,8 +301,6 @@
 						model._retainScope = model._afters['delete'];
 						model._retainScope(results);
 					}
-
-					callback(err, results);
 
 				});
 
