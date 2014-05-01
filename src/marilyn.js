@@ -102,12 +102,16 @@
 
 			function runComplete() {
 
-				model.createSilent(element, callback);
+				model.createSilent(element, function(err, results) {
 
-				if (model._afters.hasOwnProperty('create')) {
-					model._retainScope = model._afters['create'];
-					model._retainScope();
-				}
+					if (model._afters.hasOwnProperty('create')) {
+						model._retainScope = model._afters['create'];
+						model._retainScope(element);
+					}
+
+					callback(err, results);
+
+				});
 
 			}
 
@@ -138,41 +142,47 @@
 
 			function runComplete() {
 
-				var readAll = false;
+				model.readSilent(query, function(err, results) {
 
-				// if no query was passed
-				if (typeof query === 'function') {
-					callback = query;
-					readAll = true;
-				}
+					if (model._afters.hasOwnProperty('read')) {
+						model._retainScope = model._afters['read'];
+						model._retainScope(results);
+					}
 
-				// or if the query object was empty
-				else if (_.isEmpty(query)) {
-					readAll = true;
-				}
+					callback(err, results);
 
-				var results = [];
-
-				if (readAll) {
-					results = model._collection;
-				} else {
-					results = _.where(model._collection, query);
-				}
-
-				if (callback) {
-					callback(null, results);
-				}
-
-				if (model._afters.hasOwnProperty('read')) {
-					model._retainScope = model._afters['read'];
-					model._retainScope();
-				}
+				});
 
 			}
 
 		};
 
-		model.readSilent = function() {
+		model.readSilent = function(query, callback) {
+
+			var readAll = false;
+
+			// if no query was passed
+			if (typeof query === 'function') {
+				callback = query;
+				readAll = true;
+			}
+
+			// or if the query object was empty
+			else if (_.isEmpty(query)) {
+				readAll = true;
+			}
+
+			var results = [];
+
+			if (readAll) {
+				results = model._collection;
+			} else {
+				results = _.where(model._collection, query);
+			}
+
+			if (callback) {
+				callback(null, results);
+			}
 
 		};
 
@@ -189,32 +199,38 @@
 
 			function runComplete() {
 
-				var err = null;
+				model.readOneSilent(query, function(err, results) {
 
-				var results = _.where(model._collection, query);
+					if (model._afters.hasOwnProperty('readOne')) {
+						model._retainScope = model._afters['readOne'];
+						model._retainScope(result);
+					}
 
-				var result = null;
+					callback(err, results);
 
-				if (results[0]) {
-					result = results[0];
-				} else {
-					err = 'item not found';
-				}
-
-				if (callback) {
-					callback(err, result);
-				}
-
-				if (model._afters.hasOwnProperty('readOne')) {
-					model._retainScope = model._afters['readOne'];
-					model._retainScope();
-				}
+				});
 
 			}
 
 		};
 
-		model.readOneSilent = function() {
+		model.readOneSilent = function(query, callback) {
+
+			var err = null;
+
+			var results = _.where(model._collection, query);
+
+			var result = null;
+
+			if (results[0]) {
+				result = results[0];
+			} else {
+				err = 'item not found';
+			}
+
+			if (callback) {
+				callback(err, result);
+			}
 
 		};
 
@@ -231,40 +247,46 @@
 
 			function runComplete() {
 
-				var err = null;
+				model.updateSilent(query, changes, function(err, results) {
 
-				var results = _.where(model._collection, query);
+					if (model._afters.hasOwnProperty('update')) {
+						model._retainScope = model._afters['update'];
+						model._retainScope(results);
+					}
 
-				if (results) {
-
-					_.each(results, function(element) {
-
-						_.each(changes, function(value, key) {
-							element[key] = value;
-						});
-
-					});
-
-					model.inform('update', results);
-
-				} else {
-					err = 'item not found';
-				}
-
-				if (callback) {
 					callback(err, results);
-				}
 
-				if (model._afters.hasOwnProperty('update')) {
-					model._retainScope = model._afters['update'];
-					model._retainScope();
-				}
+				});
 
 			}
 
 		};
 
-		model.updateSilent = function() {
+		model.updateSilent = function(query, changes, callback) {
+
+			var err = null;
+
+			var results = _.where(model._collection, query);
+
+			if (results) {
+
+				_.each(results, function(element) {
+
+					_.each(changes, function(value, key) {
+						element[key] = value;
+					});
+
+				});
+
+				model.inform('update', results);
+
+			} else {
+				err = 'item not found';
+			}
+
+			if (callback) {
+				callback(err, results);
+			}
 
 		};
 
@@ -281,39 +303,45 @@
 
 			function runComplete() {
 
-				var err = null;
+				model.deleteSilent(query, function(err, results) {
 
-				var results = _.where(model._collection, query);
+					if (model._afters.hasOwnProperty('delete')) {
+						model._retainScope = model._afters['delete'];
+						model._retainScope(results);
+					}
 
-				if (results) {
-
-					_.each(results, function(element) {
-
-						var index = _.indexOf(model._collection, element);
-						model._collection.splice(index, 1);
-
-					});
-
-					model.inform('delete', results);
-
-				} else {
-					err = 'item not found';
-				}
-
-				if (callback) {
 					callback(err, results);
-				}
 
-				if (model._afters.hasOwnProperty('delete')) {
-					model._retainScope = model._afters['delete'];
-					model._retainScope();
-				}
+				});
 
 			}
 
 		};
 
-		model.deleteSilent = function() {
+		model.deleteSilent = function(query, callback) {
+
+			var err = null;
+
+			var results = _.where(model._collection, query);
+
+			if (results) {
+
+				_.each(results, function(element) {
+
+					var index = _.indexOf(model._collection, element);
+					model._collection.splice(index, 1);
+
+				});
+
+				model.inform('delete', results);
+
+			} else {
+				err = 'item not found';
+			}
+
+			if (callback) {
+				callback(err, results);
+			}
 
 		};
 
