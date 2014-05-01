@@ -54,8 +54,16 @@
 			model._befores[eventType] = callback;
 		};
 
+		model.beforeRemove = function(eventType) {
+			model._befores[eventType] = function() {};
+		};
+
 		model.after = function(eventType, callback) {
 			model._afters[eventType] = callback;
+		};
+
+		model.afterRemove = function(eventType) {
+			model._afters[eventType] = function() {};
 		};
 
 		model.inform = function(eventType, data) {
@@ -67,6 +75,16 @@
 
 		model.receive = function(eventType, callback) {
 			model._receivers[eventType] = callback;
+		};
+
+		model.receiveRemove = function(eventType) {
+
+			if (_.isEmpty(eventType)) {
+				model._receivers = {};
+			} else {
+				model._receivers[eventType] = function() {};
+			}
+
 		};
 
 		// query methods
@@ -103,49 +121,81 @@
 
 		model.read = function(query, callback) {
 
-			var readAll = false;
-
-			// if no query was passed
-			if ( typeof query === 'function') {
-				callback = query;
-				readAll = true;
-			}
-
-			// or if the query object was empty
-			else if (_.isEmpty(query)) {
-				readAll = true;
-			}
-
-			var results = [];
-
-			if (readAll) {
-				results = model._collection;
+			if (model._befores.hasOwnProperty('read')) {
+				model._befores['read'](function() {
+					runComplete();
+				});
 			} else {
-				results = _.where(model._collection, query);
+				runComplete();
 			}
 
-			if (callback) {
-				callback(null, results);
+			function runComplete() {
+
+				var readAll = false;
+
+				// if no query was passed
+				if (typeof query === 'function') {
+					callback = query;
+					readAll = true;
+				}
+
+				// or if the query object was empty
+				else if (_.isEmpty(query)) {
+					readAll = true;
+				}
+
+				var results = [];
+
+				if (readAll) {
+					results = model._collection;
+				} else {
+					results = _.where(model._collection, query);
+				}
+
+				if (callback) {
+					callback(null, results);
+				}
+
+				if (model._afters.hasOwnProperty('read')) {
+					model._afters['read']();
+				}
+
 			}
 
 		};
 
 		model.readOne = function(query, callback) {
 
-			var err = null;
-
-			var results = _.where(model._collection, query);
-			
-			var result = null;
-
-			if(results[0]){
-				result = results[0];
+			if (model._befores.hasOwnProperty('readOne')) {
+				model._befores['readOne'](function() {
+					runComplete();
+				});
 			} else {
-				err = 'item not found';
+				runComplete();
 			}
 
-			if (callback) {
-				callback(err, result);
+			function runComplete() {
+
+				var err = null;
+
+				var results = _.where(model._collection, query);
+
+				var result = null;
+
+				if (results[0]) {
+					result = results[0];
+				} else {
+					err = 'item not found';
+				}
+
+				if (callback) {
+					callback(err, result);
+				}
+
+				if (model._afters.hasOwnProperty('readOne')) {
+					model._afters['readOne']();
+				}
+
 			}
 
 		};
@@ -267,6 +317,10 @@
 			return _modelSet(modelName, init);
 		}
 	};
+
+	Marilyn.modelRemove = function(modelName) {
+		_models[modelName] = null;
+	}
 
 	window.Marilyn = Marilyn;
 
