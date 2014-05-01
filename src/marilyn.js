@@ -102,21 +102,25 @@
 
 			function runComplete() {
 
-				// check if the element matches the schema
-
-				model._collection.push(element);
-
-				model.inform('create', element);
-
-				if (callback) {
-					callback(null, element);
-				}
+				model.createSilent(element, callback);
 
 				if (model._afters.hasOwnProperty('create')) {
 					model._retainScope = model._afters['create'];
 					model._retainScope();
 				}
 
+			}
+
+		};
+
+		model.createSilent = function(element, callback) {
+
+			model._collection.push(element);
+
+			model.inform('create', element);
+
+			if (callback) {
+				callback(null, element);
 			}
 
 		};
@@ -168,6 +172,10 @@
 
 		};
 
+		model.readSilent = function() {
+
+		};
+
 		model.readOne = function(query, callback) {
 
 			if (model._befores.hasOwnProperty('readOne')) {
@@ -203,6 +211,10 @@
 				}
 
 			}
+
+		};
+
+		model.readOneSilent = function() {
 
 		};
 
@@ -252,6 +264,10 @@
 
 		};
 
+		model.updateSilent = function() {
+
+		};
+
 		model.delete = function(query, callback) {
 
 			if (model._befores.hasOwnProperty('delete')) {
@@ -294,6 +310,10 @@
 				}
 
 			}
+
+		};
+
+		model.deleteSilent = function() {
 
 		};
 
