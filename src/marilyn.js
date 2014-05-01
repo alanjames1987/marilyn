@@ -105,7 +105,8 @@
 				model.createSilent(element, function(err, results) {
 
 					if (callback) {
-						callback(err, results);
+						model._retainScope = callback;
+						model._retainScope(err, results);
 					}
 
 					if (model._afters.hasOwnProperty('create')) {
@@ -121,12 +122,15 @@
 
 		model.createSilent = function(element, callback) {
 
+			var err = null;
+
 			model._collection.push(element);
 
 			model.inform('create', element);
 
 			if (callback) {
-				callback(null, element);
+				model._retainScope = callback;
+				model._retainScope(err, element);
 			}
 
 		};
@@ -147,7 +151,8 @@
 				model.readSilent(query, function(err, results) {
 
 					if (callback) {
-						callback(err, results);
+						model._retainScope = callback;
+						model._retainScope(err, results);
 					}
 
 					if (model._afters.hasOwnProperty('read')) {
@@ -162,6 +167,8 @@
 		};
 
 		model.readSilent = function(query, callback) {
+
+			var err = null;
 
 			var readAll = false;
 
@@ -185,7 +192,8 @@
 			}
 
 			if (callback) {
-				callback(null, results);
+				model._retainScope = callback;
+				model._retainScope(err, results);
 			}
 
 		};
@@ -206,7 +214,8 @@
 				model.readOneSilent(query, function(err, results) {
 
 					if (callback) {
-						callback(err, results);
+						model._retainScope = callback;
+						model._retainScope(err, results);
 					}
 
 					if (model._afters.hasOwnProperty('readOne')) {
@@ -235,7 +244,8 @@
 			}
 
 			if (callback) {
-				callback(err, result);
+				model._retainScope = callback;
+				model._retainScope(err, results);
 			}
 
 		};
@@ -256,7 +266,8 @@
 				model.updateSilent(query, changes, function(err, results) {
 
 					if (callback) {
-						callback(err, results);
+						model._retainScope = callback;
+						model._retainScope(err, results);
 					}
 
 					if (model._afters.hasOwnProperty('update')) {
@@ -293,7 +304,8 @@
 			}
 
 			if (callback) {
-				callback(err, results);
+				model._retainScope = callback;
+				model._retainScope(err, results);
 			}
 
 		};
@@ -314,7 +326,8 @@
 				model.deleteSilent(query, function(err, results) {
 
 					if (callback) {
-						callback(err, results);
+						model._retainScope = callback;
+						model._retainScope(err, results);
 					}
 
 					if (model._afters.hasOwnProperty('delete')) {
@@ -350,7 +363,8 @@
 			}
 
 			if (callback) {
-				callback(err, results);
+				model._retainScope = callback;
+				model._retainScope(err, results);
 			}
 
 		};
