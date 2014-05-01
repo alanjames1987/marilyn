@@ -220,7 +220,7 @@
 
 					if (model._afters.hasOwnProperty('readOne')) {
 						model._retainScope = model._afters['readOne'];
-						model._retainScope(result);
+						model._retainScope(results);
 					}
 
 				});
@@ -245,7 +245,7 @@
 
 			if (callback) {
 				model._retainScope = callback;
-				model._retainScope(err, results);
+				model._retainScope(err, result);
 			}
 
 		};
