@@ -92,7 +92,8 @@
 		model.create = function(element, callback) {
 
 			if (model._befores.hasOwnProperty('create')) {
-				model._befores['create'](function() {
+				model._retainScope = model._befores['create'];
+				model._retainScope(function() {
 					runComplete();
 				});
 			} else {
@@ -112,7 +113,8 @@
 				}
 
 				if (model._afters.hasOwnProperty('create')) {
-					model._afters['create']();
+					model._retainScope = model._afters['create'];
+					model._retainScope();
 				}
 
 			}
@@ -122,7 +124,8 @@
 		model.read = function(query, callback) {
 
 			if (model._befores.hasOwnProperty('read')) {
-				model._befores['read'](function() {
+				model._retainScope = model._befores['read'];
+				model._retainScope(function() {
 					runComplete();
 				});
 			} else {
@@ -157,7 +160,8 @@
 				}
 
 				if (model._afters.hasOwnProperty('read')) {
-					model._afters['read']();
+					model._retainScope = model._afters['read'];
+					model._retainScope();
 				}
 
 			}
@@ -167,7 +171,8 @@
 		model.readOne = function(query, callback) {
 
 			if (model._befores.hasOwnProperty('readOne')) {
-				model._befores['readOne'](function() {
+				model._retainScope = model._befores['readOne'];
+				model._retainScope(function() {
 					runComplete();
 				});
 			} else {
@@ -193,7 +198,8 @@
 				}
 
 				if (model._afters.hasOwnProperty('readOne')) {
-					model._afters['readOne']();
+					model._retainScope = model._afters['readOne'];
+					model._retainScope();
 				}
 
 			}
@@ -203,7 +209,8 @@
 		model.update = function(query, changes, callback) {
 
 			if (model._befores.hasOwnProperty('update')) {
-				model._befores['update'](function() {
+				model._retainScope = model._befores['update'];
+				model._retainScope(function() {
 					runComplete();
 				});
 			} else {
@@ -237,7 +244,8 @@
 				}
 
 				if (model._afters.hasOwnProperty('update')) {
-					model._afters['update']();
+					model._retainScope = model._afters['update'];
+					model._retainScope();
 				}
 
 			}
@@ -247,7 +255,8 @@
 		model.delete = function(query, callback) {
 
 			if (model._befores.hasOwnProperty('delete')) {
-				model._befores['delete'](function() {
+				model._retainScope = model._befores['delete'];
+				model._retainScope(function() {
 					runComplete();
 				});
 			} else {
@@ -280,7 +289,8 @@
 				}
 
 				if (model._afters.hasOwnProperty('delete')) {
-					model._afters['delete']();
+					model._retainScope = model._afters['delete'];
+					model._retainScope();
 				}
 
 			}
