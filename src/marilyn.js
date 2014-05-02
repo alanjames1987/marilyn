@@ -408,8 +408,8 @@
 	};
 
 	Marilyn.receiveRemove = function(modelName) {
-		for (var i = 0, j = _models.length; i < j; i++) {
-			_models[i].receiveRemove;
+		for (var model in _models) {
+			model.receiveRemove;
 		}
 	};
 
