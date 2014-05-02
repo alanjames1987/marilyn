@@ -27,7 +27,7 @@
 		model._receivers = {};
 
 		// this is a variable that will be overrided each time scope needs to be retained
-		model._retainScope;
+		model._retainScope
 
 		// Socket.IO events
 
@@ -407,6 +407,12 @@
 		_models[modelName] = null;
 	};
 
+	Marilyn.receiveRemove = function(modelName) {
+		for (var i = 0, j = _models.length; i < j; i++) {
+			_models[i].receiveRemove;
+		}
+	};
+
 	window.Marilyn = Marilyn;
 
-})(); 
+})();
