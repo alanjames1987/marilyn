@@ -55,7 +55,8 @@
 		};
 
 		model.beforeRemove = function(eventType) {
-			model._befores[eventType] = function() {};
+			model._befores[eventType] = function() {
+			};
 		};
 
 		model.after = function(eventType, callback) {
@@ -63,7 +64,8 @@
 		};
 
 		model.afterRemove = function(eventType) {
-			model._afters[eventType] = function() {};
+			model._afters[eventType] = function() {
+			};
 		};
 
 		model.inform = function(eventType, data) {
@@ -82,7 +84,8 @@
 			if (_.isEmpty(eventType)) {
 				model._receivers = {};
 			} else {
-				model._receivers[eventType] = function() {};
+				model._receivers[eventType] = function() {
+				};
 			}
 
 		};
@@ -173,7 +176,7 @@
 			var readAll = false;
 
 			// if no query was passed
-			if (typeof query === 'function') {
+			if ( typeof query === 'function') {
 				callback = query;
 				readAll = true;
 			}
@@ -310,7 +313,7 @@
 
 		};
 
-		model.delete = function(query, callback) {
+		model.del = model['delete'] = function(query, callback) {
 
 			if (model._befores.hasOwnProperty('delete')) {
 				model._retainScope = model._befores['delete'];
@@ -341,7 +344,7 @@
 
 		};
 
-		model.deleteSilent = function(query, callback) {
+		model.delSilent = model.deleteSilent = function(query, callback) {
 
 			var err = null;
 
@@ -402,8 +405,8 @@
 
 	Marilyn.modelRemove = function(modelName) {
 		_models[modelName] = null;
-	}
+	};
 
 	window.Marilyn = Marilyn;
 
-})();
+})(); 
