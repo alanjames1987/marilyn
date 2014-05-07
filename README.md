@@ -7,14 +7,16 @@ Angular, Backbone, Ember, and many other libraries provide model layers which ar
 
 Marilyn can work with any framework, or by itself if you just need more data abstraction.
 
-## Usage
+## Installation
 
 Install the module with bower:
 `$ bower install marilyn`
 
-Include the `marilyn.js` file and it's dependency, `underscore.js` or `lodash.js`.
+Include the `marilyn.js` or `marilyn-min.js` file after it's dependency, `underscore.js` or `lodash.js`.
 
 Upon including the `marilyn.js` file a global `Marilyn` object will be created.
+
+## Usage
 
 ### Configure Socket.IO
 
@@ -235,10 +237,17 @@ myModel.del({
 
 `err` is always populated if nothing matches the query.
 
+Dependencies
+---
+
+Marilyn requires Underscore >= 1.5.0. Get it from: [http://underscorejs.org/](http://underscorejs.org/)
+
 Author
 ---
+
 Alan James: [alanjames1987@gmail.com](mailto:alanjames1987@gmail.com)
 
 License
 ---
+
 Licensed under [MIT](https://github.com/alanjames1987/marilynjs/blob/master/LICENSE).
