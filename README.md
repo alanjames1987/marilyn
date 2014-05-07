@@ -159,9 +159,8 @@ Marilyn.model('someModelName', function(){
 		next();
 	});
 
-	this.after('create', function(data, next{
+	this.after('create', function(data){
 		console.log('I ran after');
-		next();
 	});
 
 });
@@ -180,8 +179,8 @@ This code above will call output this.
 
 ```
 I ran before
-I ran after
 I ran in the controller create callback
+I ran after
 ```
 
 ### Querying Data
@@ -190,7 +189,7 @@ Each Marilyn model has a private variable called `_collection`, which can be pop
 
 There are five query methods, `create`, `read`, `readOne`, `update`, and `del`. The methods function as shown below.
 
-Befores and afters can alter anything about the objects returned, so even create returns the final object that was created.
+Befores can alter anything about the objects returned.
 
 ```js
 myModel.create({

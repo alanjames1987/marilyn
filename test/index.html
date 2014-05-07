@@ -6,7 +6,7 @@
 
 	<body>
 		<script src="bower_components/lodash/dist/lodash.js"></script>
-		<script src="../src/marilyn.js"></script>
+		<script src="../lib/marilyn.js"></script>
 		<script src="http://localhost:3002/socket.io/socket.io.js"></script>
 		<script>
 			var socketConnection = io.connect('http://localhost:3002'); 
@@ -18,64 +18,34 @@
 
 			Marilyn.model('something', function(){
 
-				this.on('news', function (data) {
-					console.log(this);
-					// console.log(data);
-
-					this.inform('somethingCustom', {'test': 'some test'});
-					this.create(data);
-					
-
-				});
-
-				this.before('delete', function(callback){
-					console.log('this ran before the delete');
-					console.log(' I should do validation');
+				this.before('create', function(data, callback){
+					console.log('this ran before the create');
 					callback();
 				});
 
-				this.after('delete', function(callback){
-					console.log('this ran after the delete');
-					console.log(' I should sync with the server');
+				this.after('create', function(data, callback){
+					console.log('this ran after the create');
+					callback();
 				});
 
 			});
 
+		</script>
 
-
-
+		<script>
 
 			var model = Marilyn.model('something');
 
-			for (var i = 1, j = 11; i < j; i++) {
-				model.create({
-					'test' : 'test' + i
-				});
-			}
-
-			model.receive('delete', function(data){
-				console.log('this ran after the delete but before the after');
-				console.log(' I should update the view');
+			model.receive('create', function(data){
+				console.log('this ran in the receive');
 			});
 
-			model.receive('somethingCustom', function(data){
-				
-				console.log(data);
+			model.create({}, function(err, results){
+				console.log('this ran in the callback function')
+				console.log(err);
+				console.log(results);
 
 			});
-
-			function test(){
-
-				model.delete({'test':'test1'}, function(err, results){
-
-					model.read(function(err, results){
-						// console.log(err);
-						// console.log(results);
-					});
-
-				});
-
-			}
 
 		</script>
 
