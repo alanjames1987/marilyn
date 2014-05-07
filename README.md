@@ -20,7 +20,7 @@ Upon including the `marilyn.js` file a global `Marilyn` object will be created.
 
 Before using Marilyn with Socket.IO you have to configure Marilyn to use Socket.IO's socket connection. Lets use the client side example connection from the Socket.IO website to demonstrate this.
 
-```
+```html
 <script src="/socket.io/socket.io.js"></script>
 <script>
   var socket = io.connect('http://localhost');
@@ -29,7 +29,7 @@ Before using Marilyn with Socket.IO you have to configure Marilyn to use Socket.
 
 This creates a global variable called `socket`. This variable should be passed to Marilyn so Marilyn can use the Socket.IO `on` and `emit` methods.
 
-```
+```html
 <script>
   Marilyn.config(socket);
 </script>
