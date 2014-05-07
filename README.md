@@ -55,6 +55,45 @@ var myModel = Marilyn.model('someModelName', function(){
 });
 ```
 
+Like Mongoose, that Marilyn model, called `someModelName`, can now be accessed from the global Marilyn object. 
+
+This allows you to use closures to create a model and not pollute the global scope.
+
+```js
+// myModel.js
+
+(function(){
+
+	var nonPollutingModel = Marilyn.model('someModelName', function(){
+		
+		this.on('someSocketEvent', function(data){
+			// do something with data in model
+			this.inform('someBrowserEvent', data);
+		});
+	
+	});
+	
+	nonPollutingModel.on('someOtherSocketEvent', function(data){
+		// do something else
+	});
+	
+})();
+```
+
+```js
+// myController.js
+
+(function(){
+
+	var myModel = Marilyn.model('someModelName');
+	
+	myModel.receive('someBrowserEvent', function(){
+		// do something with data in controller
+	});
+	
+})();
+```
+
 Author
 ---
 Alan James: [alanjames1987@gmail.com](mailto:alanjames1987@gmail.com)
