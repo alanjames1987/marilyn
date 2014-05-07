@@ -142,7 +142,7 @@ myModel.receive('modelReady', function(){
 
 #### Befores and Afters
 
-Befores and afters are similar to Mongoose's `pre` and `post` events. Befores are triggered before all query events, and afters are after the query events.
+Befores and afters are similar to Mongoose's `pre` and `post` events. Befores are triggered before all querys, and afters are after the query.
 
 All befores and afters are passed data that they can manipulate and a next method, which must be called in order to move on.
 
