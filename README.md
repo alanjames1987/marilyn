@@ -168,6 +168,11 @@ Marilyn.model('someModelName', function(){
 
 var myModel = Marilyn.model('someModelName');
 
+myModel.receive('create', function(data){
+	console.log('I ran in the controller create receiver')
+});
+
+
 myModel.create({}, function(err, result){
 	console.log('I ran in the controller create callback')
 });
@@ -177,6 +182,7 @@ This code above will output this.
 
 ```
 I ran before
+I ran in the controller create receiver
 I ran after
 I ran in the controller create callback
 ```
