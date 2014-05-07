@@ -12,8 +12,6 @@ Marilyn can work with any framework, or by itself if you just need more data abs
 Install the module with bower:
 `$ bower install marilyn`
 
-Mar
-
 Include the `marilyn.js` file and it's dependency, `underscore.js` or `lodash.js`.
 
 Upon including the `marilyn.js` file a global `Marilyn` object will be created.
