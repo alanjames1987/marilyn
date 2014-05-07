@@ -9,6 +9,11 @@ Marilyn can work with any framework, or by itself if you just need more data abs
 
 ## Usage
 
+Install the module with bower:
+`$ bower install marilyn`
+
+Mar
+
 Include the `marilyn.js` file and it's dependency, `underscore.js` or `lodash.js`.
 
 Upon including the `marilyn.js` file a global `Marilyn` object will be created.
@@ -138,6 +143,47 @@ myModel.receive('modelReady', function(){
 });
 ```
 
+#### Befores and Afters
+
+Befores and afters are similar to Mongoose's `pre` and `post` events. Befores are triggered before all query events, and afters are after the query events.
+
+All befores and afters are passed data that they can manipulate and a next method, which must be called in order to move on.
+
+```js
+// myModel.js
+
+Marilyn.model('someModelName', function(){
+	
+	this.before('create', function(data, next){
+		console.log('I ran before');
+		next();
+	});
+
+	this.after('create', function(data, next{
+		console.log('I ran after');
+		next();
+	});
+
+});
+```
+
+```js
+// myController.js
+var myModel = Marilyn.model('someModelName');
+
+myModel.create({}, function(err, result){
+	console.log('I ran in the controller create callback')
+});
+```
+
+This code above will call output this.
+
+```
+I ran before
+I ran after
+I ran in the controller create callback
+```
+
 ### Querying Data
 
 Each Marilyn model has a private variable called `_collection`, which can be populated with an array of data. All query methods query this variable.
@@ -149,8 +195,8 @@ Befores and afters can alter anything about the objects returned, so even create
 ```js
 myModel.create({
 	'someProperty':'someValue'
-}, function(err, results){
-	// results is the object created
+}, function(err, result){
+	// result is the object created
 });
 
 myModel.read({
