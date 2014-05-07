@@ -140,6 +140,8 @@ myModel.receive('modelReady', function(){
 });
 ```
 
+All query events inform receivers after completion. This is best shown in the next example.
+
 #### Befores and Afters
 
 Befores and afters are similar to Mongoose's `pre` and `post` events. Befores are triggered before all querys, and afters are after the query.
