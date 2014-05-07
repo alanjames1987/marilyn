@@ -8,7 +8,6 @@ Angular, Backbone, Ember, and many other libraries provide model layers which ar
 Marilyn can work with any framework, or by itself if you just need more data abstraction.
 
 ## Usage
----
 
 Include the `marilyn.js` file and it's dependency, `underscore.js` or `lodash.js`.
 
