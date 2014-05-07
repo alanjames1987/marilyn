@@ -187,7 +187,9 @@ I ran after
 
 Each Marilyn model has a private variable called `_collection`, which can be populated with an array of data. All query methods query this variable.
 
-There are five query methods, `create`, `read`, `readOne`, `update`, and `del`. The methods function as shown below.
+There are ten query methods, `create`, `createSilent`, `read`, `readSilent`, `readOne`, `readOneSilent`, `update`, `updateSilent`, and `del`, `delSilent`.
+
+All silent query methods don't trigger befores or afters.
 
 Befores can alter anything about the objects returned.
 
