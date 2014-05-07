@@ -136,6 +136,7 @@ Marilyn.model('someModelName', function(){
 
 ```js
 // myController.js
+
 var myModel = Marilyn.model('someModelName');
 
 myModel.receive('modelReady', function(){
@@ -168,6 +169,7 @@ Marilyn.model('someModelName', function(){
 
 ```js
 // myController.js
+
 var myModel = Marilyn.model('someModelName');
 
 myModel.create({}, function(err, result){
