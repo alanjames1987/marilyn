@@ -175,7 +175,7 @@ myModel.create({}, function(err, result){
 });
 ```
 
-This code above will call output this.
+This code above will output this.
 
 ```
 I ran before
