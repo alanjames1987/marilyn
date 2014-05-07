@@ -35,9 +35,7 @@ This creates a global variable called `socket`. This variable should be passed t
 </script>
 ```
 
-After this Marilyn has `on` and `emit` methods that we should call instead of the Socket.IO methods.
-
-This allows us to centralize all data querying and data fetching methods to Marilyn.
+After this Marilyn has `on` and `emit` methods that we should call instead of the Socket.IO methods. This allows us to centralize all data querying and data fetching methods to Marilyn.
 
 ### Creating Model
 
