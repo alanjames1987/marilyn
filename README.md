@@ -33,6 +33,7 @@ This creates a global variable called `socket`. This variable should be passed t
 ```
 
 After this Marilyn has `on` and `emit` methods that we should call instead of the Socket.IO methods.
+
 This allows us to centralize all data querying and data fetching methods to Marilyn.
 
 ### Creating Model
@@ -50,7 +51,7 @@ You can also create a model by passing the `Marilyn.model` methods a second para
 ```js
 var myModel = Marilyn.model('someModelName', function(){
 	
-	// this is the same as myModel
+	// "this" is the same as myModel
 
 });
 ```
@@ -93,6 +94,93 @@ This allows you to use closures to create a model and not pollute the global sco
 	
 })();
 ```
+
+### Event Handlers
+
+Marilyn has four types of event handlers, socket events, browser events, befores, and afters. 
+
+Socket events are for communicating from your model to a socket server, or from a socket server to your model.
+
+Browser events are for communicating between your model and controller, or client side logic layer.
+
+Befores run before a query method is executed. 
+
+Afters run after a query method is executed.
+
+Socket events and browser events have two methods, an event listener and an event dispatcher.
+
+#### Socket Events
+
+The socket event methods behave the same events as Socket.IO. They are `on` and `emit`.
+
+#### Browser Events
+
+Browser event methods are `receive` and `inform`. They act very similarly to Socket.IO's `on` and `emit`. 
+
+They can send data and receive data with callback functions.
+
+```js
+// myModel.js
+
+Marilyn.model('someModelName', function(){
+	
+	this.inform('modelReady');
+
+});
+```
+
+```js
+// myController.js
+var myModel = Marilyn.model('someModelName');
+
+myModel.receive('modelReady', function(){
+	// do something here
+});
+```
+
+### Querying Data
+
+Each Marilyn model has a private variable called `_collection`, which can be populated with an array of data. All query methods query this variable.
+
+There are five query methods, `create`, `read`, `readOne`, `update`, and `del`. The methods function as shown below.
+
+Befores and afters can alter anything about the objects returned, so even create returns the final object that was created.
+
+```js
+myModel.create({
+	'someProperty':'someValue'
+}, function(err, results){
+	// results is the object created
+});
+
+myModel.read({
+	'director':'George Lucas'
+}, function(err, results){
+	// results is an array of all the objects found
+});
+
+myModel.readOne({
+	id:1138
+}, function(err, result){
+	// result is the single object found
+});
+
+myModel.update({
+	id:1138
+}, {
+	'propertyToUpdate':'someValue'
+}, function(err, results){
+	// results is an array of all the objects updated
+});
+
+myModel.del({
+	id:1138
+}, function(err results){
+	// results is an array of all the objects deleted
+});
+```
+
+`err` is always populated if nothing matches the query.
 
 Author
 ---
