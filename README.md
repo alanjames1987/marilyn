@@ -57,7 +57,7 @@ var myModel = Marilyn.model('someModelName', function(){
 });
 ```
 
-Like Mongoose, that Marilyn model, called `someModelName`, can now be accessed from the global Marilyn object. 
+Like Mongoose, the Marilyn model created, called `someModelName`, can now be accessed from the global Marilyn object. 
 
 This allows you to use closures to create a model and not pollute the global scope.
 
