@@ -213,13 +213,13 @@ myModel.read({
 });
 
 myModel.readOne({
-	id:1138
+	'id':1138
 }, function(err, result){
 	// result is the single object found
 });
 
 myModel.update({
-	id:1138
+	'id':1138
 }, {
 	'propertyToUpdate':'someValue'
 }, function(err, results){
@@ -227,7 +227,7 @@ myModel.update({
 });
 
 myModel.del({
-	id:1138
+	'id':1138
 }, function(err results){
 	// results is an array of all the objects deleted
 });
