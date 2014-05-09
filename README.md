@@ -16,6 +16,8 @@ Include the `marilyn.js` or `marilyn-min.js` file after it's dependency, `unders
 
 Upon including the `marilyn.js` file a global `Marilyn` object will be created.
 
+Marilyn does not yet support AMD. You will have to load it using the `<script></script>` tags for now.
+
 ## Usage
 
 ### Configure Socket.IO
@@ -98,6 +100,36 @@ This allows you to use closures to create a model and not pollute the global sco
 })();
 ```
 
+### Adding Data to Models
+
+All models have a `_collection` variable which shouldn't be altered outside of the model itself. 
+
+This variable represents an array of all the objects you want to store in your frontend model logic. 
+
+To populate this variable you can use the built in CRUD methods listed below, or you can directly manipulate it.
+
+If you use the CRUD methods you can various built in callbacks will be run. If you manipulate it directly these callback functions won't be called.
+
+```js
+Marilyn.model('someModelName', function(){
+	
+	this.on('someSocketEvent', function(data){
+		
+		// directly sets the _collection array
+		this._collection = data;
+
+	});
+
+	this.on('someOtherServerEvent', function(data){
+
+		// pushes a new object into the _collection array
+		this.create(data);
+
+	});
+
+});
+```
+
 ### Event Handlers
 
 Marilyn has four types of event handlers, socket events, browser events, befores, and afters. 
@@ -156,12 +188,15 @@ All befores and afters are passed data that they can manipulate and a next metho
 Marilyn.model('someModelName', function(){
 	
 	this.before('create', function(data, next){
+		// this is useful for validating data before a CRUD method runs
 		console.log('I ran before');
 		next();
 	});
 
-	this.after('create', function(data){
+	this.after('create', function(data, next){
+		// this is useful for altering data before it's returned to the controller
 		console.log('I ran after');
+		next();
 	});
 
 });
@@ -191,7 +226,7 @@ I ran after
 I ran in the controller create callback
 ```
 
-### Querying Data
+### Querying Data with CRUD Methods
 
 Each Marilyn model has a private variable called `_collection`, which can be populated with an array of data. All query methods query this variable.
 
@@ -236,6 +271,8 @@ myModel.del({
 ```
 
 `err` is always populated if nothing matches the query.
+
+Query methods don't directly call the server, you must call the server manually with `emit` either before or after query methods are invoked. This makes `before` and `after` very useful for server integration.
 
 Dependencies
 ---
