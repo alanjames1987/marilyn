@@ -108,7 +108,7 @@ This variable represents an array of all the objects you want to store in your f
 
 To populate this variable you can use the built in CRUD methods listed below, or you can directly manipulate it.
 
-If you use the CRUD methods various built in callbacks will be run. If you manipulate it directly these callback functions won't be called.
+If you use the CRUD methods various built in callbacks will be run. If you manipulate `_collection` directly these callback functions won't be called.
 
 ```js
 Marilyn.model('someModelName', function(){
@@ -116,6 +116,7 @@ Marilyn.model('someModelName', function(){
 	this.on('someSocketEvent', function(data){
 		
 		// directly sets the _collection array
+		// this won't trigger any callbacks
 		this._collection = data;
 
 	});
@@ -123,6 +124,7 @@ Marilyn.model('someModelName', function(){
 	this.on('someOtherServerEvent', function(data){
 
 		// pushes a new object into the _collection array
+		// this will trigger all the "create" callbacks
 		this.create(data);
 
 	});
