@@ -108,7 +108,7 @@ This variable represents an array of all the objects you want to store in your f
 
 To populate this variable you can use the built in CRUD methods listed below, or you can directly manipulate it.
 
-If you use the CRUD methods you can various built in callbacks will be run. If you manipulate it directly these callback functions won't be called.
+If you use the CRUD methods various built in callbacks will be run. If you manipulate it directly these callback functions won't be called.
 
 ```js
 Marilyn.model('someModelName', function(){
