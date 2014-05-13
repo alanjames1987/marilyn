@@ -108,7 +108,7 @@ This variable is an array of all the objects you have stored in your frontend mo
 
 To populate this variable you can use the built in CRUD methods listed below, or the collection setter.
 
-If you use the CRUD methods various built in callbacks will be run. If you manipulate `_collection` directly these callback functions won't be called.
+If you use the CRUD methods various built in callbacks will be run. If you use the collection setter these callback functions won't be called.
 
 ```js
 Marilyn.model('someModelName', function(){
