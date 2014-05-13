@@ -44,11 +44,11 @@
 	for (var i = 5; i > 0; i--) {
 
 		model.create({
-			'id': i,
-			'title': 'someTitle'
+			'id' : i,
+			'title' : 'someTitle'
 		}, function(err, results) {
 			if (__testCreate) {
-				console.log('callback create')
+				console.log('callback create');
 				console.log('ERR ' + err);
 				console.log(results);
 			}
@@ -59,16 +59,16 @@
 	console.log('-------------------- READ --------------------');
 
 	model.read({
-		'title': 'someTitle'
+		'title' : 'someTitle'
 	}, function(err, results) {
 
 		if (__testRead) {
-
 			console.log('callback read');
 			console.log('ERR ' + err);
 			console.log(results);
-
 		}
+		
+		results[0].title = 'Some Other Title';
 
 		results[0].save(function(err, result) {
 			if (__testSave) {
@@ -84,7 +84,7 @@
 
 	// with no err
 	model.readOne({
-		'id': 2
+		'id' : 2
 	}, function(err, result) {
 		if (__testReadOne) {
 			console.log('callback readOne');
@@ -95,7 +95,7 @@
 
 	// with err
 	model.readOne({
-		'id': 6
+		'id' : 6
 	}, function(err, result) {
 		if (__testReadOne) {
 			console.log('callback readOne');
@@ -107,9 +107,9 @@
 	console.log('-------------------- UPDATE --------------------');
 
 	model.update({
-		'id': 2
+		'id' : 2
 	}, {
-		'title': 'someOtherTitle'
+		'title' : 'someOtherTitle'
 	}, function(err, results) {
 		if (__testUpdate) {
 			console.log('callback update');
@@ -119,5 +119,15 @@
 	});
 
 	console.log('-------------------- DELETE --------------------');
+
+	model.del({
+		'id' : 2
+	}, function(err, results) {
+		if (__testDelete) {
+			console.log('callback update');
+			console.log('ERR ' + err);
+			console.log(results);
+		}
+	});
 
 })();

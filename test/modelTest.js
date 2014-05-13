@@ -53,7 +53,8 @@
 		this.before('update', function(query, updateQuery, next) {
 			if (__testUpdate) {
 				console.log('before update');
-				console.log(data);
+				console.log(query);
+				console.log(updateQuery);
 			}
 			next();
 		});
@@ -77,6 +78,22 @@
 		this.after('delete', function(data, next) {
 			if (__testDelete) {
 				console.log('after delete');
+				console.log(data);
+			}
+			next();
+		});
+
+		this.before('save', function(data, next) {
+			if (__testSave) {
+				console.log('before save');
+				console.log(data);
+			}
+			next();
+		});
+
+		this.after('save', function(data, next) {
+			if (__testSave) {
+				console.log('after save');
 				console.log(data);
 			}
 			next();
