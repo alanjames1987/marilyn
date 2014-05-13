@@ -102,11 +102,11 @@ This allows you to use closures to create a model and not pollute the global sco
 
 ### Adding Data to Models
 
-All models have a `_collection` variable which shouldn't be altered outside of the model itself. 
+All models have a `_collection` variable.
 
-This variable represents an array of all the objects you want to store in your frontend model logic. 
+This variable is an array of all the objects you have stored in your frontend model. 
 
-To populate this variable you can use the built in CRUD methods listed below, or you can directly manipulate it.
+To populate this variable you can use the built in CRUD methods listed below, or the collection setter.
 
 If you use the CRUD methods various built in callbacks will be run. If you manipulate `_collection` directly these callback functions won't be called.
 
@@ -115,9 +115,9 @@ Marilyn.model('someModelName', function(){
 	
 	this.on('someSocketEvent', function(data){
 		
-		// directly sets the _collection array
+		// sets the _collection array
 		// this won't trigger any callbacks
-		this._collection = data;
+		this.collection(data);
 
 	});
 
@@ -131,6 +131,8 @@ Marilyn.model('someModelName', function(){
 
 });
 ```
+
+When new objects are added to the `_collection` variable a property of `__id` is added to them so Marilyn can internally track them. Setting the `_collection` variable directly without the CRUD methods or the collection setter will not create this `__id` property and Marilyn will not function properly.
 
 ### Event Handlers
 
