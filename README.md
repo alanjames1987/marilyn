@@ -114,7 +114,7 @@ If you use the CRUD methods various built in callbacks will be run. If you use t
 Marilyn.model('someModelName', function(){
 	
 	this.on('someSocketEvent', function(data){
-		
+
 		// sets the _collection array
 		// this won't trigger any callbacks
 		this.collection(data);
