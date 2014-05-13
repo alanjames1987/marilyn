@@ -132,7 +132,9 @@ Marilyn.model('someModelName', function(){
 });
 ```
 
-When new objects are added to the `_collection` variable a property of `__id` is added to them so Marilyn can internally track them. Setting the `_collection` variable directly without the CRUD methods or the collection setter will not create this `__id` property and Marilyn will not function properly.
+When new objects are added to the `_collection` variable a property of `__id` is added to them so Marilyn can internally track them. 
+
+**Setting the `_collection` variable directly without the CRUD methods or the collection setter will not create this `__id` property and Marilyn will not function properly.**
 
 ### Event Handlers
 
