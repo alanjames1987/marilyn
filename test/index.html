@@ -6,7 +6,7 @@
 
 	<body>
 		<script src="bower_components/lodash/dist/lodash.js"></script>
-		<script src="../lib/marilyn-min.js"></script>
+		<script src="../lib/marilyn.js"></script>
 		<script src="http://localhost:3002/socket.io/socket.io.js"></script>
 		<script>
 			var socketConnection = io.connect('http://localhost:3002'); 
@@ -14,40 +14,26 @@
 
 		<script>
 
-			Marilyn.config(socketConnection);
+		Marilyn.config(socketConnection);
 
-			Marilyn.model('something', function(){
+		var __testCreate = false;
+		var __testRead = false;
+		var __testReadOne = false;
+		var __testUpdate = false;
+		var __testDelete = false;
+		var __testSave = false;
 
-				this.before('create', function(data, callback){
-					console.log('this ran before the create');
-					callback();
-				});
-
-				this.after('create', function(data, callback){
-					console.log('this ran after the create');
-					callback();
-				});
-
-			});
-
-		</script>
-
-		<script>
-
-			var model = Marilyn.model('something');
-
-			model.receive('create', function(data){
-				console.log('this ran in the receive');
-			});
-
-			model.create({}, function(err, results){
-				console.log('this ran in the callback function')
-				console.log(err);
-				console.log(results);
-
-			});
+		// __testCreate = true;
+		// __testRead = true;
+		__testReadOne = true;
+		// __testUpdate = true;
+		// __testDelete = true;
+		// __testSave = true;
 
 		</script>
+
+		<script src="modelTest.js"></script>
+		<script src="controllerTest.js"></script>
 
 	</body>
 
