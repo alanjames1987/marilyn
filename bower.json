@@ -1,7 +1,8 @@
 {
   "name": "marilyn",
-  "keywords"      : ["model", "browser"],
-  "version": "0.7.2",
+  "description": "A WebSocket driven, real time, evented, model layer",
+  "keywords"      : ["model", "browser", "socket.io", "socket", "websocket", "real time", "crud"],
+  "version": "0.7.3",
   "authors": [
     {
       "name": "Alan James",
