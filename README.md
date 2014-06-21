@@ -1,7 +1,7 @@
 Marilyn
 ---
 
-Marilyn is a WebSocket driven, real time, evented, model layer. It has a query system similar to Mongoose and also has Socket.IO support out of the box.
+Marilyn is a client side, WebSocket driven, Pub/Sub, model layer with a query system similar to Mongoose.
 
 Angular, Backbone, Ember, and many other libraries provide model layers which are AJAX driven. While variations on these models exist they are usually only useful if you're using the entire framework they are built to work with.
 
