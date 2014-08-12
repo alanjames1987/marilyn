@@ -252,26 +252,76 @@ There are ten query methods, `create`, `createSilent`, `read`, `readSilent`, `re
 
 All silent query methods don't trigger befores or afters.
 
+#### Create
+
 ```js
+var myModel = new MyModel();
+myModel.title = 'Star Wars';
+myModel.director = 'George Lucas';
+
+// calling this method will trigger save befores and afters
+myModel.save(function(err, result){
+	// result is the object created
+});
+
+// OR
+
+var myModel = new MyModel({
+	'title':'Star Wars',
+	'director':'George Lucas'
+});
+
+// calling this method will trigger save befores and afters
+myModel.save(function(err, result){
+	// result is the object created
+});
+
+// OR
+
+// calling this method will trigger create befores and afters
 MyModel.create({
 	'title':'Star Wars',
 	'director':'George Lucas'
 }, function(err, result){
 	// result is the object created
 });
+```
 
+#### Read
+
+```js
+// calling this method will trigger read befores and afters
 MyModel.read({
 	'director':'George Lucas'
 }, function(err, results){
 	// results is an array of all the objects found
 });
 
+// calling this method will trigger readOne befores and afters
 MyModel.readOne({
 	'id':1138
 }, function(err, result){
 	// result is the single object found
 });
+```
 
+#### Update
+
+```js
+// updates using readOne
+MyModel.readOne({
+	'id':1138
+}, function(err, result){
+
+	result.director = 'George Lucas';
+
+	result.save(function(err, result){
+		// result is the updated object
+	});
+
+});
+
+// calling this method will trigger update befores and afters
 MyModel.update({
 	'id':1138
 }, {
@@ -279,7 +329,12 @@ MyModel.update({
 }, function(err, results){
 	// results is an array of all the objects updated
 });
+```
 
+#### Delete
+
+```js
+// calling this method will trigger delete befores and afters
 MyModel.del({
 	'id':1138
 }, function(err results){
