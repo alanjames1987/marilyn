@@ -1,49 +1,79 @@
 (function() {
 
-	var model = Marilyn.model('something');
-	window.model = model;
+	var Model = Marilyn.model('something');
+	window.Model = Model;
 
-	model.receive('create', function(data) {
+	Model.receive('create', function(data) {
 		if (__testCreate) {
 			console.log('receive create');
 			console.log(data);
 		}
 	});
 
-	model.receive('read', function(data) {
+	Model.receive('read', function(data) {
 		if (__testRead) {
 			console.log('receive read');
 			console.log(data);
 		}
 	});
 
-	model.receive('readOne', function(data) {
+	Model.receive('readOne', function(data) {
 		if (__testReadOne) {
 			console.log('receive readOne');
 			console.log(data);
 		}
 	});
 
-	model.receive('update', function(data) {
+	Model.receive('update', function(data) {
 		if (__testUpdate) {
 			console.log('receive update');
 			console.log(data);
 		}
 	});
 
-	model.receive('delete', function(data) {
+	Model.receive('delete', function(data) {
 		if (__testDelete) {
 			console.log('receive delete');
 			console.log(data);
 		}
 	});
 
+	console.log('-------------------- NEW --------------------');
+
+	// create 5 objects
+	for (var i = 5; i > 0; i--) {
+
+		var item = new Model();
+		item.id = i;
+		item.title = 'someTitle';
+		item.save(function(err, result){
+			console.log('callback new');
+			console.log('ERR ' + err);
+			console.log(result);
+		});
+
+	}
+
+	for (var i = 10; i > 5; i--) {
+
+		var item = new Model({
+			'id' : i,
+			'title' : 'someTitle'
+		});
+		item.save(function(err, result){
+			console.log('callback new');
+			console.log('ERR ' + err);
+			console.log(result);
+		});
+
+	}
+
 	console.log('-------------------- CREATE --------------------');
 
 	// create 5 objects
 	for (var i = 5; i > 0; i--) {
 
-		model.create({
+		Model.create({
 			'id' : i,
 			'title' : 'someTitle'
 		}, function(err, results) {
@@ -58,7 +88,7 @@
 
 	console.log('-------------------- READ --------------------');
 
-	model.read({
+	Model.read({
 		'title' : 'someTitle'
 	}, function(err, results) {
 
@@ -67,7 +97,7 @@
 			console.log('ERR ' + err);
 			console.log(results);
 		}
-		
+
 		results[0].title = 'Some Other Title';
 
 		results[0].save(function(err, result) {
@@ -83,7 +113,7 @@
 	console.log('-------------------- READONE --------------------');
 
 	// with no err
-	model.readOne({
+	Model.readOne({
 		'id' : 2
 	}, function(err, result) {
 		if (__testReadOne) {
@@ -94,7 +124,7 @@
 	});
 
 	// with err
-	model.readOne({
+	Model.readOne({
 		'id' : 6
 	}, function(err, result) {
 		if (__testReadOne) {
@@ -106,7 +136,7 @@
 
 	console.log('-------------------- UPDATE --------------------');
 
-	model.update({
+	Model.update({
 		'id' : 2
 	}, {
 		'title' : 'someOtherTitle'
@@ -120,7 +150,7 @@
 
 	console.log('-------------------- DELETE --------------------');
 
-	model.del({
+	Model.del({
 		'id' : 2
 	}, function(err, results) {
 		if (__testDelete) {

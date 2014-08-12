@@ -10,11 +10,12 @@ Marilyn can work with any framework, or by itself if you just need more data abs
 ## Installation
 
 Install the module with bower:
-`$ bower install marilyn`
+`$ bower install marilyn`  
+or download it from GitHub and copy the files into your application.
 
-Include the `marilyn.js` or `marilyn-min.js` file after it's dependency, `underscore.js` or `lodash.js`.
+Include a script for the `marilyn.js` or `marilyn-min.js` file after a script for it's dependency, `underscore.js` or `lodash.js`.
 
-Upon including the `marilyn.js` file a global `Marilyn` object will be created.
+Upon including the `marilyn.js` file a global `Marilyn` object will be available.
 
 Marilyn does not yet support AMD. You will have to load it using the `<script></script>` tags for now.
 
@@ -46,43 +47,43 @@ After this Marilyn has `on` and `emit` methods that we should call instead of th
 Like Mongoose, Marilyn creates models using the `model` method. 
 
 ```js
-var myModel = Marilyn.model('someModelName');
+var MyModel = Marilyn.model('someModelName');
 ```
 
-`myModel` is now a Marilyn model, containing query and event methods.
+`MyModel` is now a Marilyn model, containing query and event methods.
 
 You can also create a model by passing the `Marilyn.model` methods a second parameter, a callback function. Within this callback function `this` represents the model that has been created.
 
 ```js
-var myModel = Marilyn.model('someModelName', function(){
-	
-	// "this" is the same as myModel
+var MyModel = Marilyn.model('someModelName', function(){
+
+	// "this" is the same as MyModel
 
 });
 ```
 
 Like Mongoose, the Marilyn model created, called `someModelName`, can now be accessed from the global Marilyn object. 
 
-This allows you to use closures to create a model and not pollute the global scope.
+This allows you to use self executing functions to create a model and not pollute the global scope.
 
 ```js
 // myModel.js
 
 (function(){
 
-	var nonPollutingModel = Marilyn.model('someModelName', function(){
-		
+	var NonPollutingModel = Marilyn.model('someModelName', function(){
+
 		this.on('someSocketEvent', function(data){
 			// do something with data in model
 			this.inform('someBrowserEvent', data);
 		});
-	
+
 	});
-	
-	nonPollutingModel.on('someOtherSocketEvent', function(data){
+
+	NonPollutingModel.on('someOtherSocketEvent', function(data){
 		// do something else
 	});
-	
+
 })();
 ```
 
@@ -91,12 +92,12 @@ This allows you to use closures to create a model and not pollute the global sco
 
 (function(){
 
-	var myModel = Marilyn.model('someModelName');
-	
-	myModel.receive('someBrowserEvent', function(){
+	var MyModel = Marilyn.model('someModelName');
+
+	MyModel.receive('someBrowserEvent', function(){
 		// do something with data in controller
 	});
-	
+
 })();
 ```
 
@@ -106,13 +107,13 @@ All models have a `_collection` variable.
 
 This variable is an array of all the objects you have stored in your frontend model. 
 
-To populate this variable you can use the built in CRUD methods listed below, or the collection setter.
+To populate this variable you can use the built in CRUD methods listed below, or the `collection` setter.
 
-If you use the CRUD methods various built in callbacks will be run. If you use the collection setter these callback functions won't be called.
+If you use the CRUD methods various built in callbacks will be run. If you use the `collection` setter these callback functions won't be called.
 
 ```js
 Marilyn.model('someModelName', function(){
-	
+
 	this.on('someSocketEvent', function(data){
 
 		// sets the _collection array
@@ -123,7 +124,7 @@ Marilyn.model('someModelName', function(){
 
 	this.on('someOtherServerEvent', function(data){
 
-		// pushes a new object into the _collection array
+		// pushes a new object into the _collection array and performs many other tasks
 		// this will trigger all the "create" callbacks
 		this.create(data);
 
@@ -132,19 +133,19 @@ Marilyn.model('someModelName', function(){
 });
 ```
 
-When new objects are added to the `_collection` variable a property of `__id` is added to them so Marilyn can internally track them. 
+When new objects are added to the `_collection` variable a property of `__id` is added to them so Marilyn can internally track them.
 
 **Setting the `_collection` variable directly without the CRUD methods or the collection setter will not create this `__id` property and Marilyn will not function properly.**
 
 ### Event Handlers
 
-Marilyn has four types of event handlers, socket events, browser events, befores, and afters. 
+Marilyn has four types of event handlers, socket events, browser events, befores, and afters.
 
 Socket events are for communicating from your model to a socket server, or from a socket server to your model.
 
 Browser events are for communicating between your model and controller, or client side logic layer.
 
-Befores run before a query method is executed. 
+Befores run before a query method is executed.
 
 Afters run after a query method is executed.
 
@@ -152,11 +153,15 @@ Socket events and browser events have two methods, an event listener and an even
 
 #### Socket Events
 
-The socket event methods behave the same events as Socket.IO. They are `on` and `emit`.
+The socket event methods behave the same events as Socket.IO.
+
+They are `on` and `emit`.
+
+Refere to [Socket.IO documentation](http://socket.io/) to understand how these work.
 
 #### Browser Events
 
-Browser event methods are `receive` and `inform`. They act very similarly to Socket.IO's `on` and `emit`. 
+Browser event methods are `receive` and `inform`. They act very similarly to Socket.IO's `on` and `emit`.
 
 They can send data and receive data with callback functions.
 
@@ -164,8 +169,10 @@ They can send data and receive data with callback functions.
 // myModel.js
 
 Marilyn.model('someModelName', function(){
-	
-	this.inform('modelReady');
+
+	this.inform('modelReady', {
+		'someKey':'someValue'
+	});
 
 });
 ```
@@ -173,10 +180,11 @@ Marilyn.model('someModelName', function(){
 ```js
 // myController.js
 
-var myModel = Marilyn.model('someModelName');
+var MyModel = Marilyn.model('someModelName');
 
-myModel.receive('modelReady', function(){
+MyModel.receive('modelReady', function(data){
 	// do something here
+	// data is the object passed from the inform method
 });
 ```
 
@@ -192,7 +200,7 @@ All befores and afters are passed data that they can manipulate and a next metho
 // myModel.js
 
 Marilyn.model('someModelName', function(){
-	
+
 	this.before('create', function(data, next){
 		// this is useful for validating data before a CRUD method runs
 		console.log('I ran before');
@@ -211,14 +219,14 @@ Marilyn.model('someModelName', function(){
 ```js
 // myController.js
 
-var myModel = Marilyn.model('someModelName');
+var MyModel = Marilyn.model('someModelName');
 
-myModel.receive('create', function(data){
+MyModel.receive('create', function(data){
 	console.log('I ran in the controller create receiver')
 });
 
 
-myModel.create({}, function(err, result){
+MyModel.create({}, function(err, result){
 	console.log('I ran in the controller create callback')
 });
 ```
@@ -232,36 +240,39 @@ I ran after
 I ran in the controller create callback
 ```
 
+Befores and afters are triggered from `create`, `read`, `readOne`, `update`, `delete`, and `save`.
+
+Sometimes multiple befores and afters can be triggered by one CRUD method being invoked, for example the `save` method can trigger befores and afters for `create` and `update` in addition to befores and afters for `save` events.
+
 ### Querying Data with CRUD Methods
 
 Each Marilyn model has a private variable called `_collection`, which can be populated with an array of data. All query methods query this variable.
 
-There are ten query methods, `create`, `createSilent`, `read`, `readSilent`, `readOne`, `readOneSilent`, `update`, `updateSilent`, and `del`, `delSilent`.
+There are ten query methods, `create`, `createSilent`, `read`, `readSilent`, `readOne`, `readOneSilent`, `update`, `updateSilent`, `del`, and `delSilent`.
 
 All silent query methods don't trigger befores or afters.
 
-Befores can alter anything about the objects returned.
-
 ```js
-myModel.create({
-	'someProperty':'someValue'
+MyModel.create({
+	'title':'Star Wars',
+	'director':'George Lucas'
 }, function(err, result){
 	// result is the object created
 });
 
-myModel.read({
+MyModel.read({
 	'director':'George Lucas'
 }, function(err, results){
 	// results is an array of all the objects found
 });
 
-myModel.readOne({
+MyModel.readOne({
 	'id':1138
 }, function(err, result){
 	// result is the single object found
 });
 
-myModel.update({
+MyModel.update({
 	'id':1138
 }, {
 	'propertyToUpdate':'someValue'
@@ -269,7 +280,7 @@ myModel.update({
 	// results is an array of all the objects updated
 });
 
-myModel.del({
+MyModel.del({
 	'id':1138
 }, function(err results){
 	// results is an array of all the objects deleted

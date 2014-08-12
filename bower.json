@@ -2,7 +2,7 @@
   "name": "marilyn",
   "description": "A WebSocket driven, real time, evented, model layer",
   "keywords"      : ["model", "browser", "socket.io", "socket", "websocket", "real time", "crud", "pub/sub", "pubsub", "publish–subscribe"],
-  "version": "0.8.0",
+  "version": "0.9.0",
   "authors": [
     {
       "name": "Alan James",

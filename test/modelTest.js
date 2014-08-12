@@ -3,7 +3,7 @@
 	Marilyn.model('something', function() {
 
 		this.before('create', function(data, next) {
-			if (__testCreate) {
+			if (__testNew || __testCreate) {
 				console.log('before create');
 				console.log(data);
 			}
@@ -11,7 +11,7 @@
 		});
 
 		this.after('create', function(data, next) {
-			if (__testCreate) {
+			if (__testNew || __testCreate) {
 				console.log('after create');
 				console.log(data);
 			}
