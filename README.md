@@ -1,6 +1,8 @@
 Marilyn
 ---
 
+<img src="http://marilynjs.com/img/marilyn.jpg" />
+
 Marilyn is a client side, WebSocket driven, Pub/Sub, model layer with a query system similar to Mongoose.
 
 Angular, Backbone, Ember, and many other libraries provide model layers which are AJAX driven. While variations on these models exist they are usually only useful if you're using the entire framework they are built to work with.
