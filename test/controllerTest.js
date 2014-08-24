@@ -3,6 +3,8 @@
 	var Model = Marilyn.model('something');
 	window.Model = Model;
 
+	// Local listeners
+
 	Model.receive('create', function(data) {
 		if (__testCreate) {
 			console.log('receive create');
@@ -36,6 +38,13 @@
 			console.log('receive delete');
 			console.log(data);
 		}
+	});
+
+	// Server listeners
+
+	Model.on('response', function(data){
+		console.log('on response');
+		console.log(data);
 	});
 
 	console.log('-------------------- NEW --------------------');
@@ -159,5 +168,8 @@
 			console.log(results);
 		}
 	});
+
+	console.log('-------------------- EMIT --------------------');
+	Model.emit('request');
 
 })();
