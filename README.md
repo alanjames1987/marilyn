@@ -17,7 +17,7 @@ or download it from GitHub and copy the files into your application.
 
 Include a script for the `marilyn.js` or `marilyn-min.js` file after a script for it's dependency, `underscore.js` or `lodash.js`.
 
-Upon including the `marilyn.js` file a global `Marilyn` object will be available.
+Upon including the `marilyn.js` file a global `marilyn` object will be available.
 
 Marilyn does not yet support AMD. You will have to load it using the `<script></script>` tags for now.
 
@@ -38,7 +38,7 @@ This creates a global variable called `socket`. This variable should be passed t
 
 ```html
 <script>
-  Marilyn.config(socket);
+  marilyn.config(socket);
 </script>
 ```
 
@@ -49,22 +49,22 @@ After this Marilyn has `on` and `emit` methods that we should call instead of th
 Like Mongoose, Marilyn creates models using the `model` method. 
 
 ```js
-var MyModel = Marilyn.model('someModelName');
+var MyModel = marilyn.model('someModelName');
 ```
 
 `MyModel` is now a Marilyn model, containing query and event methods.
 
-You can also create a model by passing the `Marilyn.model` methods a second parameter, a callback function. Within this callback function `this` represents the model that has been created.
+You can also create a model by passing the `marilyn.model` methods a second parameter, a callback function. Within this callback function `this` represents the model that has been created.
 
 ```js
-var MyModel = Marilyn.model('someModelName', function(){
+var MyModel = marilyn.model('someModelName', function(){
 
 	// "this" is the same as MyModel
 
 });
 ```
 
-Like Mongoose, the Marilyn model created, called `someModelName`, can now be accessed from the global Marilyn object. 
+Like Mongoose, the Marilyn model created, called `someModelName`, can now be accessed from the global `marilyn` object. 
 
 This allows you to use self executing functions to create a model and not pollute the global scope.
 
@@ -73,7 +73,7 @@ This allows you to use self executing functions to create a model and not pollut
 
 (function(){
 
-	var NonPollutingModel = Marilyn.model('someModelName', function(){
+	var NonPollutingModel = marilyn.model('someModelName', function(){
 
 		this.on('someSocketEvent', function(data){
 			// do something with data in model
@@ -94,7 +94,7 @@ This allows you to use self executing functions to create a model and not pollut
 
 (function(){
 
-	var MyModel = Marilyn.model('someModelName');
+	var MyModel = marilyn.model('someModelName');
 
 	MyModel.receive('someBrowserEvent', function(){
 		// do something with data in controller
@@ -114,7 +114,7 @@ To populate this variable you can use the built in CRUD methods listed below, or
 If you use the CRUD methods various built in callbacks will be run. If you use the `collection` setter these callback functions won't be called.
 
 ```js
-Marilyn.model('someModelName', function(){
+marilyn.model('someModelName', function(){
 
 	this.on('someSocketEvent', function(data){
 
@@ -170,7 +170,7 @@ They can send data and receive data with callback functions.
 ```js
 // myModel.js
 
-Marilyn.model('someModelName', function(){
+marilyn.model('someModelName', function(){
 
 	this.inform('modelReady', {
 		'someKey':'someValue'
@@ -182,7 +182,7 @@ Marilyn.model('someModelName', function(){
 ```js
 // myController.js
 
-var MyModel = Marilyn.model('someModelName');
+var MyModel = marilyn.model('someModelName');
 
 MyModel.receive('modelReady', function(data){
 	// do something here
@@ -201,7 +201,7 @@ All befores and afters are passed data that they can manipulate and a next metho
 ```js
 // myModel.js
 
-Marilyn.model('someModelName', function(){
+marilyn.model('someModelName', function(){
 
 	this.before('create', function(data, next){
 		// this is useful for validating data before a CRUD method runs
@@ -221,7 +221,7 @@ Marilyn.model('someModelName', function(){
 ```js
 // myController.js
 
-var MyModel = Marilyn.model('someModelName');
+var MyModel = marilyn.model('someModelName');
 
 MyModel.receive('create', function(data){
 	console.log('I ran in the controller create receiver')

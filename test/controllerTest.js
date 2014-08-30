@@ -1,6 +1,6 @@
 (function() {
 
-	var Model = Marilyn.model('something');
+	var Model = marilyn.model('something');
 	window.Model = Model;
 
 	// Local listeners
@@ -42,7 +42,7 @@
 
 	// Server listeners
 
-	Model.on('response', function(data){
+	Model.on('response', function(data) {
 		console.log('on response');
 		console.log(data);
 	});
@@ -55,7 +55,7 @@
 		var item = new Model();
 		item.id = i;
 		item.title = 'someTitle';
-		item.save(function(err, result){
+		item.save(function(err, result) {
 			console.log('callback new');
 			console.log('ERR ' + err);
 			console.log(result);
@@ -66,10 +66,10 @@
 	for (var i = 10; i > 5; i--) {
 
 		var item = new Model({
-			'id' : i,
-			'title' : 'someTitle'
+			'id': i,
+			'title': 'someTitle'
 		});
-		item.save(function(err, result){
+		item.save(function(err, result) {
 			console.log('callback new');
 			console.log('ERR ' + err);
 			console.log(result);
@@ -83,8 +83,8 @@
 	for (var i = 5; i > 0; i--) {
 
 		Model.create({
-			'id' : i,
-			'title' : 'someTitle'
+			'id': i,
+			'title': 'someTitle'
 		}, function(err, results) {
 			if (__testCreate) {
 				console.log('callback create');
@@ -98,7 +98,7 @@
 	console.log('-------------------- READ --------------------');
 
 	Model.read({
-		'title' : 'someTitle'
+		'title': 'someTitle'
 	}, function(err, results) {
 
 		if (__testRead) {
@@ -123,7 +123,7 @@
 
 	// with no err
 	Model.readOne({
-		'id' : 2
+		'id': 2
 	}, function(err, result) {
 		if (__testReadOne) {
 			console.log('callback readOne');
@@ -134,7 +134,7 @@
 
 	// with err
 	Model.readOne({
-		'id' : 6
+		'id': 6
 	}, function(err, result) {
 		if (__testReadOne) {
 			console.log('callback readOne');
@@ -146,9 +146,9 @@
 	console.log('-------------------- UPDATE --------------------');
 
 	Model.update({
-		'id' : 2
+		'id': 2
 	}, {
-		'title' : 'someOtherTitle'
+		'title': 'someOtherTitle'
 	}, function(err, results) {
 		if (__testUpdate) {
 			console.log('callback update');
@@ -160,7 +160,7 @@
 	console.log('-------------------- DELETE --------------------');
 
 	Model.del({
-		'id' : 2
+		'id': 2
 	}, function(err, results) {
 		if (__testDelete) {
 			console.log('callback update');

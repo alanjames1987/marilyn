@@ -1,6 +1,6 @@
 (function() {
 
-	Marilyn.model('something', function() {
+	marilyn.model('something', function() {
 
 		this.before('create', function(data, next) {
 			if (__testNew || __testCreate) {

@@ -8,6 +8,6 @@
     }
   ],
   "dependencies": {
-    "lodash": "2.4.1"
+    "underscore": "1.5.0"
   }
 }

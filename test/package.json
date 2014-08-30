@@ -9,10 +9,5 @@
   ],
   "dependencies": {
     "socket.io": "0.9.16"
-  },
-  "devDependencies": {
-    "mocha": "1.15.1",
-    "should": "2.1.1",
-    "supertest": "0.8.2"
   }
 }
