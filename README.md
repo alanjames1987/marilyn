@@ -19,8 +19,6 @@ Include a script for the `marilyn.js` or `marilyn-min.js` file after a script fo
 
 Upon including the `marilyn.js` file a global `marilyn` object will be available.
 
-Marilyn does not yet support AMD. You will have to load it using the `<script></script>` tags for now.
-
 ## Usage
 
 ### Configure Socket.IO
