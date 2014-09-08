@@ -1,6 +1,8 @@
 Marilyn
 ---
 
+[![Bower version](https://badge.fury.io/bo/marilyn.svg)](http://badge.fury.io/bo/marilyn)
+
 <img src="http://marilynjs.com/img/marilyn.jpg" />
 
 Marilyn is a client side, WebSocket driven, Pub/Sub, model layer with a query system similar to Mongoose.
