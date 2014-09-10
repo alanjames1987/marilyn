@@ -54,7 +54,7 @@ After this Marilyn has `on` and `emit` methods that we should call instead of th
 
 ### Creating Model
 
-Like Mongoose, Marilyn creates models using the `model` method. 
+Like Mongoose, Marilyn creates models using the `model` method.
 
 ```js
 var MyModel = marilyn.model('someModelName');
@@ -115,7 +115,9 @@ This allows you to use self executing functions to create a model and not pollut
 
 All models have a `_collection` variable.
 
-This variable is an array of all the objects you have stored in your frontend model. 
+**Setting the `_collection` variable directly without the CRUD methods or the collection setter will not create this `__id` property and Marilyn will not function properly.**
+
+This variable is an array of all the objects you have stored in your frontend model.
 
 To populate this variable you can use the built in CRUD methods listed below, or the `collection` setter.
 
@@ -144,8 +146,6 @@ marilyn.model('someModelName', function(){
 ```
 
 When new objects are added to the `_collection` variable a property of `__id` is added to them so Marilyn can internally track them.
-
-**Setting the `_collection` variable directly without the CRUD methods or the collection setter will not create this `__id` property and Marilyn will not function properly.**
 
 ### Event Handlers
 
