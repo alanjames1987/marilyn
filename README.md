@@ -245,8 +245,8 @@ This code above will output this.
 
 ```
 I ran before
-I ran in the controller create receiver
 I ran after
+I ran in the controller create receiver
 I ran in the controller create callback
 ```
 

@@ -1,15 +1,39 @@
 {
   "name": "marilyn",
-  "description": "A WebSocket driven, real time, evented, model layer",
-  "keywords"      : ["model", "browser", "socket.io", "socket", "websocket", "real time", "real-time", "realtime", "crud", "pub/sub", "pubsub", "publish–subscribe"],
-  "version": "0.11.1",
+  "version": "0.11.2",
+  "homepage": "https://github.com/alanjames1987/marilyn",
   "authors": [
-    {
-      "name": "Alan James",
-      "email": "alanjames1987@gmail.com"
-    }
+    "Alan James <alan.james@veratics.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "description": "A client side, Socket.IO driven, Pub/Sub, model layer with a query system similar to Mongoose.",
+  "main": "/lib/marilyn.js",
+  "keywords": [
+    "model",
+    "browser",
+    "socket.io",
+    "socket",
+    "websocket",
+    "real time",
+    "real-time",
+    "realtime",
+    "crud",
+    "pub/sub",
+    "pubsub",
+    "publish–subscribe"
   ],
   "dependencies": {
     "underscore": ">=1.5.0"
+  },
+  "devDependencies": {
+    "node-uuid": "~1.4.1",
+    "qunit": "1.15.0"
   }
 }

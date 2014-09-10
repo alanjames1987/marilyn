@@ -1,41 +1,24 @@
+<!DOCTYPE html>
 <html>
 
 	<head>
-		<title>Testing Marylin</title>
+		<title></title>
+		<link rel="stylesheet" href="../bower_components/qunit/qunit/qunit.css" />
 	</head>
 
 	<body>
-		<script src="bower_components/underscore/underscore.js"></script>
+
+		<div id="qunit"></div>
+		<div id="qunit-fixture"></div>
+
+		<script src="../bower_components/node-uuid/uuid.js"></script>
+		<script src="../bower_components/qunit/qunit/qunit.js"></script>
+
+		<script src="../bower_components/underscore/underscore.js"></script>
+
 		<script src="../lib/marilyn.js"></script>
-		<script src="http://localhost:3002/socket.io/socket.io.js"></script>
-		<script>
 
-			var socketConnection = io.connect('http://localhost:3002'); 
-
-			var __testNew = false;
-			var __testCreate = false;
-			var __testRead = false;
-			var __testReadOne = false;
-			var __testUpdate = false;
-			var __testDelete = false;
-			var __testSave = false;
-
-			__testNew = true;
-			__testCreate = true;
-			__testRead = true;
-			__testReadOne = true;
-			__testUpdate = true;
-			__testDelete = true;
-			__testSave = true;
-
-		</script>
-
-		<script src="modelTest.js"></script>
-		<script src="controllerTest.js"></script>
-
-		<script>
-			marilyn.config(socketConnection);
-		</script>
+		<script src="test.js"></script>
 
 	</body>
 
