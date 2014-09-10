@@ -32,10 +32,10 @@ QUnit.test('CREATE - before, receive, after, and callback events run when creati
 		ran.callback = true;
 	});
 
-	assert.ok(ran.before);
-	assert.ok(ran.receive);
-	assert.ok(ran.after);
-	assert.ok(ran.callback);
+	assert.ok(ran.before, 'create before ran');
+	assert.ok(ran.after, 'create after ran');
+	assert.ok(ran.receive, 'create receive ran');
+	assert.ok(ran.callback, 'create callback ran');
 
 });
 
@@ -72,10 +72,10 @@ QUnit.test('CREATE - before, receive, after, and callback events run when saving
 		ran.callback = true;
 	});
 
-	assert.ok(ran.before);
-	assert.ok(ran.receive);
-	assert.ok(ran.after);
-	assert.ok(ran.callback);
+	assert.ok(ran.before, 'new create before ran');
+	assert.ok(ran.after, 'new create after ran');
+	assert.ok(ran.receive, 'new create receive ran');
+	assert.ok(ran.callback, 'new create callback ran');
 
 });
 
@@ -113,10 +113,10 @@ QUnit.test('READ - before receive, after, and callback events run when reading a
 		ran.callback = true;
 	});
 
-	assert.ok(ran.before);
-	assert.ok(ran.receive);
-	assert.ok(ran.after);
-	assert.ok(ran.callback);
+	assert.ok(ran.before, 'read before ran');
+	assert.ok(ran.after, 'read after ran');
+	assert.ok(ran.receive, 'read receive ran');
+	assert.ok(ran.callback, 'read callback ran');
 
 });
 
@@ -161,10 +161,10 @@ QUnit.test('READONE - before receive, after, and callback events run when readin
 
 	});
 
-	assert.ok(ran.before);
-	assert.ok(ran.receive);
-	assert.ok(ran.after);
-	assert.ok(ran.callback);
+	assert.ok(ran.before, 'readOne before ran');
+	assert.ok(ran.after, 'readOne after ran');
+	assert.ok(ran.receive, 'readOne receive ran');
+	assert.ok(ran.callback, 'readOne callback ran');
 
 });
 
@@ -212,10 +212,10 @@ QUnit.test('UPDATE - before, receive, after, and callback events run when updati
 
 	});
 
-	assert.ok(ran.before);
-	assert.ok(ran.receive);
-	assert.ok(ran.after);
-	assert.ok(ran.callback);
+	assert.ok(ran.before, 'update before ran');
+	assert.ok(ran.after, 'update after ran');
+	assert.ok(ran.receive, 'update receive ran');
+	assert.ok(ran.callback, 'update callback ran');
 
 });
 
@@ -259,10 +259,10 @@ QUnit.test('UPDATE - before, receive, after, and callback events run when saving
 
 	});
 
-	assert.ok(ran.before);
-	assert.ok(ran.receive);
-	assert.ok(ran.after);
-	assert.ok(ran.callback);
+	assert.ok(ran.before, 'update new instance before ran');
+	assert.ok(ran.after, 'update new instance after ran');
+	assert.ok(ran.receive, 'update new instance receive ran');
+	assert.ok(ran.callback, 'update new instance callback ran');
 
 });
 
@@ -308,9 +308,9 @@ QUnit.test('DELETE - before, receive, after, and callback events run when deleti
 
 	});
 
-	assert.ok(ran.before);
-	assert.ok(ran.receive);
-	assert.ok(ran.after);
-	assert.ok(ran.callback);
+	assert.ok(ran.before, 'delete before ran');
+	assert.ok(ran.after, 'delete after ran');
+	assert.ok(ran.receive, 'delete receive ran');
+	assert.ok(ran.callback, 'delete callback ran');
 
 });
