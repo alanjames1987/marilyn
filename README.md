@@ -204,7 +204,9 @@ All query events inform receivers after completion. This is best shown in the ne
 
 Befores and afters are similar to Mongoose's `pre` and `post` events. Befores are triggered before all querys, and afters are after the query.
 
-All befores and afters are passed data that they can manipulate and a next method, which must be called in order to progress the flow control.
+All befores and afters, except for `update`, are passed data that they can manipulate and a next method, which must be called in order to progress the flow control.
+
+The update `before` is passed three parameters, the old data, the new data, and next.
 
 ```js
 // myModel.js
