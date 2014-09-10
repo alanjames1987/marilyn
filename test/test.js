@@ -187,12 +187,12 @@ QUnit.test('UPDATE - before, receive, after, and callback events run when updati
 			next();
 		});
 
-		this.after('update', function(oldData, next) {
+		this.after('update', function(data, next) {
 			ran.after = true;
 			next();
 		});
 
-		this.receive('update', function(oldData, newData) {
+		this.receive('update', function(data, newData) {
 			ran.receive = true;
 		});
 
