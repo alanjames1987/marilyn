@@ -206,7 +206,7 @@ Befores and afters are similar to Mongoose's `pre` and `post` events. Befores ar
 
 All befores and afters, except for `update`, are passed data that they can manipulate and a next method, which must be called in order to progress the flow control.
 
-The update `before` is passed three parameters, the old data, the new data, and next.
+**The update `before` is passed three parameters, the old data, the new data, and next.**
 
 ```js
 // myModel.js
