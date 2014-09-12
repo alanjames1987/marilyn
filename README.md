@@ -271,7 +271,7 @@ var myModel = new MyModel();
 myModel.title = 'Star Wars';
 myModel.director = 'George Lucas';
 
-// calling this method will trigger save befores and afters
+// calling the save method will trigger create befores and afters as well as save befores and afters
 myModel.save(function(err, result){
 	// result is the object created
 });
@@ -283,14 +283,14 @@ var myModel = new MyModel({
 	'director':'George Lucas'
 });
 
-// calling this method will trigger save befores and afters
+// calling the save method will trigger create befores and afters as well as save befores and afters
 myModel.save(function(err, result){
 	// result is the object created
 });
 
 // OR
 
-// calling this method will trigger create befores and afters
+// calling the create method will trigger create befores and afters, but not saves
 MyModel.create({
 	'title':'Star Wars',
 	'director':'George Lucas'
@@ -302,6 +302,19 @@ MyModel.create({
 #### Read
 
 ```js
+// calling the read method will trigger read befores and afters
+// calling read without passing a query will read all
+MyModel.read(function(err, results){
+	// results is an array of all the objects in the collection
+});
+
+// calling the read method will trigger read befores and afters
+MyModel.read({
+	'director':'George Lucas'
+}, function(err, results){
+	// results is an array of all the objects found
+});
+
 // calling this method will trigger read befores and afters
 MyModel.read({
 	'director':'George Lucas'
@@ -327,6 +340,7 @@ MyModel.readOne({
 
 	result.director = 'George Lucas';
 
+	// calling the save method will trigger update befores and afters as well as save befores and afters
 	result.save(function(err, result){
 		// result is the updated object
 	});
