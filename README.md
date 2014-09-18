@@ -19,15 +19,15 @@ Install the module with bower:
 $ bower install marilyn
 ```
 
-or download it from GitHub and copy the files into your application.
+Or [download it from GitHub](https://github.com/alanjames1987/marilyn/archive/master.zip), extract it, and copy the files into your application.
 
-### Using Script Tags
+### Intalling with Script Tags
 
-Include a script for the `marilyn.js` or `marilyn-min.js` file after a script for it's dependency, `underscore.js` or `lodash.js`.
+Include a script for the `marilyn.js` or `marilyn-min.js` file after a script for it's dependency, `underscore.js`.
 
 Upon including the `marilyn.js` file a global `marilyn` object will be available.
 
-### Using AMD
+### Intalling with AMD
 
 Marilyn can also be loaded using any AMD compliant module loader such as [RequireJS](http://www.requirejs.org/).
 
