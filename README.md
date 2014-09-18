@@ -14,7 +14,11 @@ Marilyn can work with any framework, or by itself if you just need more data abs
 ## Installation
 
 Install the module with bower:
-`$ bower install marilyn`  
+
+```bash
+$ bower install marilyn
+```
+
 or download it from GitHub and copy the files into your application.
 
 ### Using Script Tags
