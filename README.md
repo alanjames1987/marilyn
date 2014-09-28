@@ -33,6 +33,24 @@ Marilyn can also be loaded using any AMD compliant module loader such as [Requir
 
 Marilyn's only dependency is `underscore`.
 
+When using Marilyn with AMD you MUST load the models before using them inside controllers. This can be done as follows.
+
+```js
+
+require(['model/myModel], function(myModel) {
+
+	// configure Marilyn and other core libraries
+
+	require(['controller/myController], function(myController) {
+
+		// you can now use the model in your controller
+
+	});
+
+});
+
+```
+
 ## Usage
 
 ### Configure Socket.IO
@@ -76,7 +94,7 @@ var MyModel = marilyn.model('someModelName', function(){
 });
 ```
 
-Like Mongoose, the Marilyn model created, called `someModelName`, can now be accessed from the global `marilyn` object. 
+Like Mongoose, the Marilyn model created, called `someModelName`, can now be accessed from the global `marilyn` object.
 
 This allows you to use self executing functions to create a model and not pollute the global scope.
 
