@@ -37,11 +37,11 @@ When using Marilyn with AMD you MUST load the models before using them inside co
 
 ```js
 
-require(['model/myModel], function(myModel) {
+require(['model/myModel'], function(myModel) {
 
 	// configure Marilyn and other core libraries
 
-	require(['controller/myController], function(myController) {
+	require(['controller/myController'], function(myController) {
 
 		// you can now use the model in your controller
 
