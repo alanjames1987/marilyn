@@ -379,7 +379,7 @@ QUnit.test('UPDATE - before, after, receive, and callback events run when saving
 
 		this.receive('update', function(data) {
 			ran.updateReceive = 5;
-			typeValid.updateReceive = _.isObject(data);
+			typeValid.updateReceive = _.isArray(data);
 		});
 
 		this.receive('save', function(data) {
