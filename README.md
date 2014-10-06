@@ -236,13 +236,13 @@ All callbacks of befores and afters are passed data that they can manipulate and
 
 ##### Create / Save
 
-**before**
+**before callback**
 ```js
 data:Object, next:Function
 ```
 `data` is the object being created. It is useful for validating data or adding default fields to objects.
 
-**after**
+**after callback**
 ```js
 data:Object, next:Function
 ```
@@ -250,13 +250,13 @@ data:Object, next:Function
 
 ##### Read
 
-**before**
+**before callback**
 ```js
 query:Object, next:Function
 ```
 `query` is what is being used to search for records. It is useful for restricting access to records.
 
-**after**
+**after callback**
 ```js
 data:Object, next:Function
 ```
@@ -264,13 +264,13 @@ data:Object, next:Function
 
 ##### Read One
 
-**before**
+**before callback**
 ```js
 query:Object, next:Function
 ```
 `query` is the query being used to read the one object. It is useful for restricting access to records.
 
-**after**
+**after callback**
 ```js
 data:Object, next:Function
 ```
@@ -279,15 +279,15 @@ data:Object, next:Function
 
 ##### Update
 
-**before**
+**before callback**
 ```js
-searchQuery, updateQuery, next:Function
+searchQuery:Object, updateQuery:Object, next:Function
 ```
 `searchQuery` is the query being used to read the objects. It is useful for restricting access to records.
 `updateQuery` is the changes that will be made to all objects found. It is useful for restricting access to certain field updates.
 
 
-**after**
+**after callback**
 ```js
 data:Object, next:Function
 ```
@@ -295,13 +295,13 @@ data:Object, next:Function
 
 ##### Delete
 
-**before**
+**before callback**
 ```js
 searchQuery:Object, next:Function
 ```
 `searchQuery` is the query being used to read the objects. It is useful for restricting access to records.
 
-**after**
+**after callback**
 ```js
 data:Object, next:Function
 ```
