@@ -226,53 +226,86 @@ All query events inform receivers after completion. This is best shown in the ne
 
 Befores and afters are similar to Mongoose's `pre` and `post` events. Befores are triggered before all querys, and afters are after the query.
 
-All befores and afters, except for `update`, are passed data that they can manipulate and a next method, which must be called in order to progress the flow control.
+To create a before or after you use the `before` or `after` method passing it two parameters
 
-**The update `before` is passed three parameters, the old data, the new data, and next.**
+The first parameter is either a string of a single event name or an array of strings of event names.
 
+The second paramter is a callback function.
+
+All callbacks of befores and afters are passed data that they can manipulate and a next method, which must be called in order to progress the flow control. Callbacks are passed different sets of data depending on the event being listened for, which are listed below.
+
+##### Create / Save
+
+**before**
 ```js
-// myModel.js
-
-marilyn.model('someModelName', function(){
-
-	this.before('create', function(data, next){
-		// this is useful for validating data before a CRUD method runs
-		console.log('I ran before');
-		next();
-	});
-
-	this.after('create', function(data, next){
-		// this is useful for altering data before it's returned to the controller
-		console.log('I ran after');
-		next();
-	});
-
-});
+data:Object, next:Function
 ```
+`data` is the object being created. It is useful for validating data or adding default fields to objects.
 
+**after**
 ```js
-// myController.js
-
-var MyModel = marilyn.model('someModelName');
-
-MyModel.receive('create', function(data){
-	console.log('I ran in the controller create receiver')
-});
-
-
-MyModel.create({}, function(err, result){
-	console.log('I ran in the controller create callback')
-});
+data:Object, next:Function
 ```
+`data` is the object that has been created. It is useful for altering data before it's returned to the callback or syncing the data with a server.
 
-This code above will output this.
+##### Read
 
+**before**
+```js
+query:Object, next:Function
 ```
-I ran before
-I ran after
-I ran in the controller create receiver
-I ran in the controller create callback
+`query` is what is being used to search for records. It is useful for restricting access to records.
+
+**after**
+```js
+data:Object, next:Function
 ```
+`data` is an array of objects found from the query. It is useful for adding custom fields or methods.
+
+##### Read One
+
+**before**
+```js
+query:Object, next:Function
+```
+`query` is the query being used to read the one object. It is useful for restricting access to records.
+
+**after**
+```js
+data:Object, next:Function
+```
+`data` is an the single object found from the query. It is useful for adding custom fields and methods.
+
+
+##### Update
+
+**before**
+```js
+searchQuery, updateQuery, next:Function
+```
+`searchQuery` is the query being used to read the objects. It is useful for restricting access to records.
+`updateQuery` is the changes that will be made to all objects found. It is useful for restricting access to certain field updates.
+
+
+**after**
+```js
+data:Object, next:Function
+```
+`data` is an array of objects that have been updated. It is useful for adding custom fields and methods or syncing with a server.
+
+##### Delete
+
+**before**
+```js
+searchQuery:Object, next:Function
+```
+`searchQuery` is the query being used to read the objects. It is useful for restricting access to records.
+
+**after**
+```js
+data:Object, next:Function
+```
+`data` is an array of objects that have been deleted. It is useful for syncing with a server.
 
 Befores and afters are triggered from `create`, `read`, `readOne`, `update`, `delete`, and `save`.
 
