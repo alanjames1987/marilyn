@@ -262,7 +262,7 @@ query:Object, next:Function
 
 **after callback**
 ```js
-data:Object, next:Function
+data:Array, next:Function
 ```
 `data` is an array of objects found from the query. It is useful for adding custom fields or methods.
 
@@ -280,7 +280,6 @@ data:Object, next:Function
 ```
 `data` is an the single object found from the query. It is useful for adding custom fields and methods.
 
-
 ##### Update
 
 **before callback**
@@ -290,10 +289,9 @@ searchQuery:Object, updateQuery:Object, next:Function
 `searchQuery` is the query being used to read the objects. It is useful for restricting access to records.
 `updateQuery` is the changes that will be made to all objects found. It is useful for restricting access to certain field updates.
 
-
 **after callback**
 ```js
-data:Object, next:Function
+data:Array, next:Function
 ```
 `data` is an array of objects that have been updated. It is useful for adding custom fields and methods or syncing with a server.
 
@@ -307,7 +305,7 @@ searchQuery:Object, next:Function
 
 **after callback**
 ```js
-data:Object, next:Function
+data:Array, next:Function
 ```
 `data` is an array of objects that have been deleted. It is useful for syncing with a server.
 
