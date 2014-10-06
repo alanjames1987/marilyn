@@ -4,10 +4,15 @@ QUnit.test('CREATE - before, after, receive, and callback events run when creati
 
 	var ran = {};
 	ran.before = 0;
-	ran.receive = 0;
 	ran.after = 0;
-
+	ran.receive = 0;
 	ran.callback = 0;
+
+	var typeValid = {};
+	typeValid.before = false;
+	typeValid.after = false;
+	typeValid.receive = false;
+	typeValid.callback = false;
 
 	var name = uuid.v4();
 
@@ -15,28 +20,36 @@ QUnit.test('CREATE - before, after, receive, and callback events run when creati
 
 		this.before('create', function(data, next) {
 			ran.before = 1;
+			typeValid.before = _.isObject(data);
 			next();
 		});
 
 		this.after('create', function(data, next) {
 			ran.after = 2;
+			typeValid.after = _.isObject(data);
 			next();
 		});
 
 		this.receive('create', function(data) {
 			ran.receive = 3;
+			typeValid.receive = _.isObject(data);
 		});
 
 	});
 
 	Model.create({}, function(err, data) {
 		ran.callback = 4;
+		typeValid.callback = _.isObject(data);
 	});
 
 	assert.equal(ran.before, 1, 'create before ran');
 	assert.equal(ran.after, 2, 'create after ran');
 	assert.equal(ran.receive, 3, 'create receive ran');
 	assert.equal(ran.callback, 4, 'create callback ran');
+
+	assert.ok(typeValid.before, 'create before has valid data type');
+	assert.ok(typeValid.after, 'create after has valid data type');
+	assert.ok(typeValid.receive, 'create receive has valid data type');
 
 });
 
@@ -46,12 +59,19 @@ QUnit.test('CREATE - before, after, receive, and callback events run when saving
 	ran.createBefore = 0;
 	ran.createAfter = 0;
 	ran.createReceive = 0;
-
 	ran.saveBefore = 0;
 	ran.saveAfter = 0;
 	ran.saveReceive = 0;
-
 	ran.callback = 0;
+
+	var typeValid = {};
+	typeValid.createBefore = false;
+	typeValid.createAfter = false;
+	typeValid.createReceive = false;
+	typeValid.saveBefore = false;
+	typeValid.saveAfter = false;
+	typeValid.saveReceive = false;
+	typeValid.callback = false;
 
 	var name = uuid.v4();
 
@@ -59,30 +79,36 @@ QUnit.test('CREATE - before, after, receive, and callback events run when saving
 
 		this.before('save', function(data, next) {
 			ran.saveBefore = 1;
+			typeValid.saveBefore = _.isObject(data);
 			next();
 		});
 
 		this.before('create', function(data, next) {
 			ran.createBefore = 2;
+			typeValid.createBefore = _.isObject(data);
 			next();
 		});
 
 		this.after('create', function(data, next) {
 			ran.createAfter = 3;
+			typeValid.createAfter = _.isObject(data);
 			next();
 		});
 
 		this.after('save', function(data, next) {
 			ran.saveAfter = 4;
+			typeValid.saveAfter = _.isObject(data);
 			next();
 		});
 
 		this.receive('create', function(data) {
 			ran.createReceive = 5;
+			typeValid.createReceive = _.isObject(data);
 		});
 
 		this.receive('save', function(data) {
 			ran.saveReceive = 6;
+			typeValid.saveReceive = _.isObject(data);
 		});
 
 	});
@@ -90,17 +116,24 @@ QUnit.test('CREATE - before, after, receive, and callback events run when saving
 	var item = new Model();
 	item.save(function(err, data) {
 		ran.callback = 7;
+		typeValid.callback = _.isObject(data);
 	});
 
 	assert.equal(ran.createBefore, 2, 'new create before ran');
 	assert.equal(ran.createAfter, 3, 'new create after ran');
 	assert.equal(ran.createReceive, 5, 'new create receive ran');
-
 	assert.equal(ran.saveBefore, 1, 'new create before save ran');
 	assert.equal(ran.saveAfter, 4, 'new create after save ran');
 	assert.equal(ran.saveReceive, 6, 'new create receive save ran');
-
 	assert.equal(ran.callback, 7, 'new create callback ran');
+
+	assert.ok(typeValid.createBefore, 'new create before has valid data type');
+	assert.ok(typeValid.createAfter, 'new create after has valid data type');
+	assert.ok(typeValid.createReceive, 'new create receive has valid data type');
+	assert.ok(typeValid.saveBefore, 'new create before save has valid data type');
+	assert.ok(typeValid.saveAfter, 'new create after save has valid data type');
+	assert.ok(typeValid.saveReceive, 'new create receive save has valid data type');
+	assert.ok(typeValid.callback, 'new create calback has valid data type');
 
 });
 
@@ -112,7 +145,14 @@ QUnit.test('READ - before receive, after, and callback events run when reading a
 	ran.before = 0;
 	ran.receive = 0;
 	ran.after = 0;
+
 	ran.callback = 0;
+
+	var typeValid = {};
+	typeValid.before = false;
+	typeValid.after = false;
+	typeValid.receive = false;
+	typeValid.callback = false;
 
 	var name = uuid.v4();
 
@@ -120,22 +160,27 @@ QUnit.test('READ - before receive, after, and callback events run when reading a
 
 		this.before('read', function(data, next) {
 			ran.before = 1;
+			// data is the query that was submitted
+			typeValid.before = _.isObject(data);
 			next();
 		});
 
 		this.after('read', function(data, next) {
 			ran.after = 2;
+			typeValid.after = _.isArray(data);
 			next();
 		});
 
 		this.receive('read', function(data) {
 			ran.receive = 3;
+			typeValid.receive = _.isArray(data);
 		});
 
 	});
 
 	Model.read({}, function(err, data) {
 		ran.callback = 4;
+		typeValid.callback = _.isArray(data);
 	});
 
 	assert.equal(ran.before, 1, 'read before ran');
@@ -143,8 +188,12 @@ QUnit.test('READ - before receive, after, and callback events run when reading a
 	assert.equal(ran.receive, 3, 'read receive ran');
 	assert.equal(ran.callback, 4, 'read callback ran');
 
-});
+	assert.ok(typeValid.before, 'read before has valid data type');
+	assert.ok(typeValid.after, 'read after has valid data type');
+	assert.ok(typeValid.receive, 'read receive has valid data type');
+	assert.ok(typeValid.callback, 'read callback has valid data type');
 
+});
 
 QUnit.test('READONE - before receive, after, and callback events run when reading all', function(assert) {
 
@@ -154,22 +203,31 @@ QUnit.test('READONE - before receive, after, and callback events run when readin
 	ran.after = 0;
 	ran.callback = 0;
 
+	var typeValid = {};
+	typeValid.before = false;
+	typeValid.after = false;
+	typeValid.receive = false;
+	typeValid.callback = false;
+
 	var name = uuid.v4();
 
 	var Model = marilyn.model(name, function() {
 
 		this.before('readOne', function(data, next) {
 			ran.before = 1;
+			typeValid.before = _.isObject(data);
 			next();
 		});
 
 		this.after('readOne', function(data, next) {
 			ran.after = 2;
+			typeValid.after = _.isObject(data);
 			next();
 		});
 
 		this.receive('readOne', function(data) {
 			ran.receive = 3;
+			typeValid.receive = _.isObject(data);
 		});
 
 	});
@@ -182,6 +240,7 @@ QUnit.test('READONE - before receive, after, and callback events run when readin
 			'id': 1
 		}, function(err, data) {
 			ran.callback = 4;
+			typeValid.callback = _.isObject(data);
 		});
 
 	});
@@ -190,6 +249,11 @@ QUnit.test('READONE - before receive, after, and callback events run when readin
 	assert.equal(ran.after, 2, 'readOne after ran');
 	assert.equal(ran.receive, 3, 'readOne receive ran');
 	assert.equal(ran.callback, 4, 'readOne callback ran');
+
+	assert.ok(typeValid.before, 'readOne before has valid data type');
+	assert.ok(typeValid.after, 'readOne after has valid data type');
+	assert.ok(typeValid.receive, 'readOne receive has valid data type');
+	assert.ok(typeValid.callback, 'readOne callback has valid data type');
 
 });
 
@@ -203,22 +267,31 @@ QUnit.test('UPDATE - before, after, receive, and callback events run when updati
 	ran.after = 0;
 	ran.callback = 0;
 
+	var typeValid = {};
+	typeValid.before = false;
+	typeValid.after = false;
+	typeValid.receive = false;
+	typeValid.callback = false;
+
 	var name = uuid.v4();
 
 	var Model = marilyn.model(name, function() {
 
 		this.before('update', function(oldData, newData, next) {
 			ran.before = 1;
+			typeValid.before = (_.isObject(oldData) && _.isObject(newData));
 			next();
 		});
 
 		this.after('update', function(data, next) {
 			ran.after = 2;
+			typeValid.after = _.isObject(data);
 			next();
 		});
 
 		this.receive('update', function(data, newData) {
 			ran.receive = 3;
+			typeValid.receive = _.isObject(data);
 		});
 
 	});
@@ -233,6 +306,7 @@ QUnit.test('UPDATE - before, after, receive, and callback events run when updati
 			'title': 'Something'
 		}, function(err, data) {
 			ran.callback = 4;
+			typeValid.callback = _.isArray(data);
 		});
 
 	});
@@ -241,6 +315,11 @@ QUnit.test('UPDATE - before, after, receive, and callback events run when updati
 	assert.equal(ran.after, 2, 'update after ran');
 	assert.equal(ran.receive, 3, 'update receive ran');
 	assert.equal(ran.callback, 4, 'update callback ran');
+
+	assert.ok(typeValid.before, 'update before has valid data type');
+	assert.ok(typeValid.after, 'update after has valid data type');
+	assert.ok(typeValid.receive, 'update receive has valid data type');
+	assert.ok(typeValid.callback, 'update callback has valid data type');
 
 });
 
@@ -251,45 +330,58 @@ QUnit.test('UPDATE - before, after, receive, and callback events run when saving
 	ran.updateBefore = 0;
 	ran.updateReceive = 0;
 	ran.updateAfter = 0;
-
 	ran.saveBefore = 0;
 	ran.saveReceive = 0;
 	ran.saveAfter = 0;
-
 	ran.callback = 0;
+
+	var typeValid = {};
+	typeValid.updateBefore = false;
+	typeValid.updateAfter = false;
+	typeValid.updateReceive = false;
+	typeValid.saveBefore = false;
+	typeValid.saveAfter = false;
+	typeValid.saveReceive = false;
+	typeValid.callback = false;
 
 	var name = uuid.v4();
 
 	var Model = marilyn.model(name, function() {
 
 		this.before('save', function(data, next) {
-
 			ran.saveBefore = 1;
+			typeValid.saveBefore = _.isObject(data);
 			next();
 		});
 
 		this.before('update', function(oldData, newData, next) {
 			ran.updateBefore = 2;
+			typeValid.updateBefore = (_.isObject(oldData) && _.isObject(newData));
 			next();
 		});
 
 		this.after('update', function(data, next) {
 			ran.updateAfter = 3;
+			typeValid.updateAfter = _.isObject(data);
 			next();
 		});
 
 		this.after('save', function(data, next) {
 			ran.saveAfter = 4;
+			typeValid.saveAfter = _.isObject(data);
 			next();
 		});
 
 		this.receive('update', function(data) {
 			ran.updateReceive = 5;
+			typeValid.updateReceive = _.isObject(data);
 		});
 
 		this.receive('save', function(data) {
 			ran.saveReceive = 6;
+			typeValid.saveReceive = _.isObject(data);
 		});
+
 	});
 
 	Model.create({
@@ -300,6 +392,7 @@ QUnit.test('UPDATE - before, after, receive, and callback events run when saving
 
 		data.save(function(err, data) {
 			ran.callback = 7;
+			typeValid.callback = _.isObject(data);
 		});
 
 	});
@@ -307,12 +400,18 @@ QUnit.test('UPDATE - before, after, receive, and callback events run when saving
 	assert.equal(ran.updateBefore, 2, 'update new instance before ran');
 	assert.equal(ran.updateAfter, 3, 'update new instance after ran');
 	assert.equal(ran.updateReceive, 5, 'update new instance receive ran');
-
 	assert.equal(ran.saveBefore, 1, 'update new instance before ran');
 	assert.equal(ran.saveAfter, 4, 'update new instance after ran');
 	assert.equal(ran.saveReceive, 6, 'update new instance receive ran');
-
 	assert.equal(ran.callback, 7, 'update new instance callback ran');
+
+	assert.ok(typeValid.updateBefore, 'update new instance before has valid data type');
+	assert.ok(typeValid.updateAfter, 'update new instance after has valid data type');
+	assert.ok(typeValid.updateReceive, 'update new instance receive has valid data type');
+	assert.ok(typeValid.saveBefore, 'update new instance before has valid data type');
+	assert.ok(typeValid.saveAfter, 'update new instance after has valid data type');
+	assert.ok(typeValid.saveReceive, 'update new instance receive has valid data type');
+	assert.ok(typeValid.callback, 'update new instance callback has valid data type');
 
 });
 
@@ -326,22 +425,32 @@ QUnit.test('DELETE - before, after, receive, and callback events run when deleti
 	ran.after = 0;
 	ran.callback = 0;
 
+	var typeValid = {};
+	typeValid.before = false;
+	typeValid.after = false;
+	typeValid.receive = false;
+	typeValid.callback = false;
+
 	var name = uuid.v4();
 
 	var Model = marilyn.model(name, function() {
 
 		this.before('delete', function(data, next) {
 			ran.before = 1;
+			// data is the query that was submitted
+			typeValid.before = _.isObject(data);
 			next();
 		});
 
 		this.after('delete', function(data, next) {
 			ran.after = 2;
+			typeValid.after = _.isArray(data);
 			next();
 		});
 
 		this.receive('delete', function(data) {
 			ran.receive = 3;
+			typeValid.receive = _.isArray(data);
 		});
 
 	});
@@ -354,6 +463,7 @@ QUnit.test('DELETE - before, after, receive, and callback events run when deleti
 			'id': 1
 		}, function(err, result) {
 			ran.callback = 4;
+			typeValid.callback = _.isArray(result);
 		});
 
 	});
@@ -362,6 +472,11 @@ QUnit.test('DELETE - before, after, receive, and callback events run when deleti
 	assert.equal(ran.after, 2, 'delete after ran');
 	assert.equal(ran.receive, 3, 'delete receive ran');
 	assert.equal(ran.callback, 4, 'delete callback ran');
+
+	assert.ok(typeValid.before, 'delete before has valid data type');
+	assert.ok(typeValid.after, 'delete after has valid data type');
+	assert.ok(typeValid.receive, 'delete receive has valid data type');
+	assert.ok(typeValid.callback, 'delete callback has valid data type');
 
 });
 
@@ -373,22 +488,31 @@ QUnit.test('DELETE - before, after, and receive events run when calling instance
 	ran.after = 0;
 	ran.callback = 0;
 
+	var typeValid = {};
+	typeValid.before = false;
+	typeValid.after = false;
+	typeValid.receive = false;
+	typeValid.callback = false;
+
 	var name = uuid.v4();
 
 	var Model = marilyn.model(name, function() {
 
 		this.before('delete', function(data, next) {
 			ran.before = 1;
+			typeValid.before = _.isObject(data);
 			next();
 		});
 
 		this.after('delete', function(data, next) {
 			ran.after = 2;
+			typeValid.after = _.isObject(data);
 			next();
 		});
 
 		this.receive('delete', function(data) {
 			ran.receive = 3;
+			typeValid.receive = _.isObject(data);
 		});
 
 	});
@@ -397,13 +521,21 @@ QUnit.test('DELETE - before, after, and receive events run when calling instance
 		'id': 1
 	}, function(err, data) {
 
-		data.delete();
+		data.delete(function(err, result) {
+			console.log(result);
+			typeValid.callback = _.isArray(result);
+		});
 
 	});
 
 	assert.equal(ran.before, 1, 'delete before ran');
 	assert.equal(ran.after, 2, 'delete after ran');
 	assert.equal(ran.receive, 3, 'delete receive ran');
+
+	assert.ok(typeValid.before, 'delete before has valid data type');
+	assert.ok(typeValid.after, 'delete after has valid data type');
+	assert.ok(typeValid.receive, 'delete receive has valid data type');
+	assert.ok(typeValid.callback, 'delete callback has valid data type');
 
 });
 
@@ -455,9 +587,9 @@ QUnit.test('MULTIPLE - before, after, and receive, events run when passed for mu
 
 	});
 
-	assert.equal(ran.before, 4, 'delete before ran');
-	assert.equal(ran.after, 4, 'delete after ran');
-	assert.equal(ran.receive, 4, 'delete receive ran');
+	assert.equal(ran.before, 4, 'multiple before ran');
+	assert.equal(ran.after, 4, 'multiple after ran');
+	assert.equal(ran.receive, 4, 'multiple receive ran');
 
 });
 
