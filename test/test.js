@@ -1,6 +1,6 @@
 /** CREATE */
 
-QUnit.test('CREATE - before, receive, after, and callback events run when creating', function(assert) {
+QUnit.test('CREATE - before, after, receive, and callback events run when creating', function(assert) {
 
 	var ran = {};
 	ran.before = 0;
@@ -40,7 +40,7 @@ QUnit.test('CREATE - before, receive, after, and callback events run when creati
 
 });
 
-QUnit.test('CREATE - before, receive, after, and callback events run when saving a new instance', function(assert) {
+QUnit.test('CREATE - before, after, receive, and callback events run when saving a new instance', function(assert) {
 
 	var ran = {};
 	ran.createBefore = 0;
@@ -195,7 +195,7 @@ QUnit.test('READONE - before receive, after, and callback events run when readin
 
 /** UPDATE */
 
-QUnit.test('UPDATE - before, receive, after, and callback events run when updating', function(assert) {
+QUnit.test('UPDATE - before, after, receive, and callback events run when updating', function(assert) {
 
 	var ran = {};
 	ran.before = 0;
@@ -244,7 +244,7 @@ QUnit.test('UPDATE - before, receive, after, and callback events run when updati
 
 });
 
-QUnit.test('UPDATE - before, receive, after, and callback events run when saving an existing instance', function(assert) {
+QUnit.test('UPDATE - before, after, receive, and callback events run when saving an existing instance', function(assert) {
 
 	var ran = {};
 
@@ -318,7 +318,7 @@ QUnit.test('UPDATE - before, receive, after, and callback events run when saving
 
 /** DELETE */
 
-QUnit.test('DELETE - before, receive, after, and callback events run when deleting', function(assert) {
+QUnit.test('DELETE - before, after, receive, and callback events run when deleting', function(assert) {
 
 	var ran = {};
 	ran.before = 0;
@@ -362,5 +362,140 @@ QUnit.test('DELETE - before, receive, after, and callback events run when deleti
 	assert.equal(ran.after, 2, 'delete after ran');
 	assert.equal(ran.receive, 3, 'delete receive ran');
 	assert.equal(ran.callback, 4, 'delete callback ran');
+
+});
+
+QUnit.test('DELETE - before, after, and receive events run when calling instance delete method', function(assert) {
+
+	var ran = {};
+	ran.before = 0;
+	ran.receive = 0;
+	ran.after = 0;
+	ran.callback = 0;
+
+	var name = uuid.v4();
+
+	var Model = marilyn.model(name, function() {
+
+		this.before('delete', function(data, next) {
+			ran.before = 1;
+			next();
+		});
+
+		this.after('delete', function(data, next) {
+			ran.after = 2;
+			next();
+		});
+
+		this.receive('delete', function(data) {
+			ran.receive = 3;
+		});
+
+	});
+
+	Model.create({
+		'id': 1
+	}, function(err, data) {
+
+		data.delete();
+
+	});
+
+	assert.equal(ran.before, 1, 'delete before ran');
+	assert.equal(ran.after, 2, 'delete after ran');
+	assert.equal(ran.receive, 3, 'delete receive ran');
+
+});
+
+/** MULTIPLE EVENTS */
+
+QUnit.test('MULTIPLE - before, after, and receive, events run when passed for multiple event types', function(assert) {
+
+	var ran = {};
+	ran.before = 0;
+	ran.receive = 0;
+	ran.after = 0;
+	ran.callback = 0;
+
+	var name = uuid.v4();
+
+	var Model = marilyn.model(name, function() {
+
+		// updates can't be tested for because it's callback has a different signature
+
+		this.before(['create', 'read', 'readOne', 'delete'], function(data, next) {
+			ran.before++;
+			next();
+		});
+
+		this.after(['create', 'read', 'readOne', 'delete'], function(data, next) {
+			ran.after++;
+			next();
+		});
+
+		this.receive(['create', 'read', 'readOne', 'delete'], function(data) {
+			ran.receive++;
+		});
+
+	});
+
+	Model.create({
+		'id': 1
+	}, function(err, data) {
+
+		Model.read({});
+
+		Model.readOne({
+			'id': 1
+		});
+
+		Model.del({
+			'id': 1
+		});
+
+	});
+
+	assert.equal(ran.before, 4, 'delete before ran');
+	assert.equal(ran.after, 4, 'delete after ran');
+	assert.equal(ran.receive, 4, 'delete receive ran');
+
+});
+
+/** PLUGINS */
+
+QUnit.test('PLUGINS - plugin functions are called', function(assert) {
+
+	var called = false;
+
+	var name = uuid.v4();
+
+	var Model = marilyn.model(name);
+
+	Model.use(function() {
+		called = true;
+	});
+
+	assert.ok(called, 'plugin function was called');
+
+});
+
+QUnit.test('PLUGINS - plugin functions have the correct context', function(assert) {
+
+	var called = false;
+
+	var name = uuid.v4();
+	var randomTestingValue = uuid.v4();
+
+	var Model = marilyn.model(name, function() {
+		this.testingPropery = randomTestingValue;
+	});
+
+	Model.use(function() {
+		if (randomTestingValue === this.testingPropery) {
+			called = true;
+		}
+	});
+
+	assert.ok(called, 'plugin function was called');
 
 });
