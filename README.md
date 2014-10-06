@@ -226,15 +226,19 @@ All query events inform receivers after completion. This is best shown in the ne
 
 Befores and afters are similar to Mongoose's `pre` and `post` events. Befores are triggered before all querys, and afters are after the query.
 
+Befores and afters are triggered from `save`, `create`, `read`, `readOne`, `update`, and `delete`.
+
+Sometimes multiple befores and afters can be triggered by one CRUD method being invoked, for example the `save` method can trigger befores and afters for `create` and `update` in addition to befores and afters for `save` events.
+
 To create a before or after you use the `before` or `after` method passing it two parameters
 
-The first parameter is either a string of a single event name or an array of strings of event names.
+The first parameter is either a string of a single event name (listed above) or an array of strings of event names.
 
 The second paramter is a callback function.
 
 All callbacks of befores and afters are passed data that they can manipulate and a next method, which must be called in order to progress the flow control. Callbacks are passed different sets of data depending on the event being listened for, which are listed below.
 
-##### Create / Save
+##### Save / Create
 
 **before callback**
 ```js
@@ -306,10 +310,6 @@ searchQuery:Object, next:Function
 data:Object, next:Function
 ```
 `data` is an array of objects that have been deleted. It is useful for syncing with a server.
-
-Befores and afters are triggered from `create`, `read`, `readOne`, `update`, `delete`, and `save`.
-
-Sometimes multiple befores and afters can be triggered by one CRUD method being invoked, for example the `save` method can trigger befores and afters for `create` and `update` in addition to befores and afters for `save` events.
 
 ### Querying Data with CRUD Methods
 
