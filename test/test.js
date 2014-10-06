@@ -149,7 +149,6 @@ QUnit.test('READ - before receive, after, and callback events run when reading a
 	ran.before = 0;
 	ran.receive = 0;
 	ran.after = 0;
-
 	ran.callback = 0;
 
 	var typeValid = {};
@@ -333,7 +332,6 @@ QUnit.test('UPDATE - before, after, receive, and callback events run when updati
 QUnit.test('UPDATE - before, after, receive, and callback events run when saving an existing instance and have valid data types', function(assert) {
 
 	var ran = {};
-
 	ran.updateBefore = 0;
 	ran.updateReceive = 0;
 	ran.updateAfter = 0;
