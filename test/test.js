@@ -1,5 +1,50 @@
 /** CREATE */
 
+QUnit.test('CREATE - before, after, receive, and callback events are given the correct context', function(assert) {
+
+	var context = {};
+	context.before = false;
+	context.after = false;
+	context.receive = false;
+	context.callback = false;
+
+	var name = uuid.v4();
+
+	var contextCheck = uuid.v4();
+
+	var Model = marilyn.model(name, function() {
+
+		this.contextCheck = contextCheck;
+
+		this.before('create', function(data, next) {
+			context.before = (this.contextCheck === contextCheck);
+			next();
+		});
+
+		this.after('create', function(data, next) {
+			context.after = (this.contextCheck === contextCheck);
+			next();
+		});
+
+		this.receive('create', function(data) {
+			context.receive = (this.contextCheck === contextCheck);
+		});
+
+	});
+
+	Model.create({
+		'contextCheck': contextCheck,
+	}, function(err, data) {
+		context.callback = (this.contextCheck === contextCheck);
+	});
+
+	assert.ok(context.before, 'create before context');
+	assert.ok(context.after, 'create after context');
+	assert.ok(context.receive, 'create receive context');
+	assert.ok(context.callback, 'create callback context');
+
+});
+
 QUnit.test('CREATE - before, after, receive, and callback events run when creating and have valid data types', function(assert) {
 
 	var ran = {};
@@ -141,7 +186,52 @@ QUnit.test('CREATE - before, after, receive, and callback events run when saving
 
 });
 
-// /** READ */
+/** READ */
+
+QUnit.test('READ - before, after, receive, and callback events are given the correct context', function(assert) {
+
+	var context = {};
+	context.before = false;
+	context.after = false;
+	context.receive = false;
+	context.callback = false;
+
+	var name = uuid.v4();
+
+	var contextCheck = uuid.v4();
+
+	var Model = marilyn.model(name, function() {
+
+		this.contextCheck = contextCheck;
+
+		this.before('read', function(data, next) {
+			context.before = (this.contextCheck === contextCheck);
+			next();
+		});
+
+		this.after('read', function(data, next) {
+			context.after = (this.contextCheck === contextCheck);
+			next();
+		});
+
+		this.receive('read', function(data) {
+			context.receive = (this.contextCheck === contextCheck);
+		});
+
+	});
+
+	Model.read({
+		'someProperty': 'someValue',
+	}, function(err, data) {
+		context.callback = (this.contextCheck === contextCheck);
+	});
+
+	assert.ok(context.before, 'read before context');
+	assert.ok(context.after, 'read after context');
+	assert.ok(context.receive, 'read receive context');
+	assert.ok(context.callback, 'read callback context');
+
+});
 
 QUnit.test('READ - before receive, after, and callback events run when reading all and have valid data types', function(assert) {
 
@@ -196,6 +286,58 @@ QUnit.test('READ - before receive, after, and callback events run when reading a
 	assert.ok(typeValid.after, 'read after has valid data type');
 	assert.ok(typeValid.receive, 'read receive has valid data type');
 	assert.ok(typeValid.callback, 'read callback has valid data type');
+
+});
+
+QUnit.test('READONE - before, after, receive, and callback events are given the correct context', function(assert) {
+
+	var context = {};
+	context.before = false;
+	context.after = false;
+	context.receive = false;
+	context.callback = false;
+
+	var name = uuid.v4();
+
+	var contextCheck = uuid.v4();
+
+	var Model = marilyn.model(name, function() {
+
+		this.contextCheck = contextCheck;
+
+		this.before('readOne', function(data, next) {
+			context.before = (this.contextCheck === contextCheck);
+			next();
+		});
+
+		this.after('readOne', function(data, next) {
+			context.after = (this.contextCheck === contextCheck);
+			next();
+		});
+
+		this.receive('readOne', function(data) {
+			context.receive = (this.contextCheck === contextCheck);
+		});
+
+	});
+
+	Model.create({
+		'id': 1,
+		'someProperty': 'someValue',
+	}, function(err, data) {
+
+		Model.readOne({
+			'id': 1
+		}, function(err, data) {
+			context.callback = (this.contextCheck === contextCheck);
+		});
+
+	});
+
+	assert.ok(context.before, 'readOne before context');
+	assert.ok(context.after, 'readOne after context');
+	assert.ok(context.receive, 'readOne receive context');
+	assert.ok(context.callback, 'readOne callback context');
 
 });
 
@@ -263,6 +405,60 @@ QUnit.test('READONE - before receive, after, and callback events run when readin
 });
 
 /** UPDATE */
+
+QUnit.test('UPDATE - before, after, receive, and callback events are given the correct context', function(assert) {
+
+	var context = {};
+	context.before = false;
+	context.after = false;
+	context.receive = false;
+	context.callback = false;
+
+	var name = uuid.v4();
+
+	var contextCheck = uuid.v4();
+
+	var Model = marilyn.model(name, function() {
+
+		this.contextCheck = contextCheck;
+
+		this.before('update', function(searchQuery, updateQuery, next) {
+			context.before = (this.contextCheck === contextCheck);
+			next();
+		});
+
+		this.after('update', function(data, next) {
+			context.after = (this.contextCheck === contextCheck);
+			next();
+		});
+
+		this.receive('update', function(data) {
+			context.receive = (this.contextCheck === contextCheck);
+		});
+
+	});
+
+	Model.create({
+		'id': 1,
+		'someProperty': 'someValue',
+	}, function(err, data) {
+
+		Model.update({
+			'id': 1,
+		}, {
+			'title': 'Something',
+		}, function(err, data) {
+			context.callback = (this.contextCheck === contextCheck);
+		});
+
+	});
+
+	assert.ok(context.before, 'update before context');
+	assert.ok(context.after, 'update after context');
+	assert.ok(context.receive, 'update receive context');
+	assert.ok(context.callback, 'update callback context');
+
+});
 
 QUnit.test('UPDATE - before, after, receive, and callback events run when updating and have valid data types', function(assert) {
 
@@ -423,6 +619,58 @@ QUnit.test('UPDATE - before, after, receive, and callback events run when saving
 });
 
 /** DELETE */
+
+QUnit.test('DELETE - before, after, receive, and callback events are given the correct context', function(assert) {
+
+	var context = {};
+	context.before = false;
+	context.after = false;
+	context.receive = false;
+	context.callback = false;
+
+	var name = uuid.v4();
+
+	var contextCheck = uuid.v4();
+
+	var Model = marilyn.model(name, function() {
+
+		this.contextCheck = contextCheck;
+
+		this.before('delete', function(data, next) {
+			context.before = (this.contextCheck === contextCheck);
+			next();
+		});
+
+		this.after('delete', function(data, next) {
+			context.after = (this.contextCheck === contextCheck);
+			next();
+		});
+
+		this.receive('delete', function(data) {
+			context.receive = (this.contextCheck === contextCheck);
+		});
+
+	});
+
+	Model.create({
+		'id': 1,
+		'someProperty': 'someValue',
+	}, function(err, data) {
+
+		Model.del({
+			'id': 1
+		}, function(err, results) {
+			context.callback = (this.contextCheck === contextCheck);
+		});
+
+	});
+
+	assert.ok(context.before, 'delete before context');
+	assert.ok(context.after, 'delete after context');
+	assert.ok(context.receive, 'delete receive context');
+	assert.ok(context.callback, 'delete callback context');
+
+});
 
 QUnit.test('DELETE - before, after, receive, and callback events run when deleting and have valid data types', function(assert) {
 
