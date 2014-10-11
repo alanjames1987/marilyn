@@ -45,6 +45,72 @@ QUnit.test('CREATE - before, after, receive, and callback events are given the c
 
 });
 
+QUnit.test('CREATE - before, after, receive, and callback events are given the correct context when saving a new instance', function(assert) {
+
+	var context = {};
+	context.createBefore = false;
+	context.createAfter = false;
+	context.createReceive = false;
+	context.saveBefore = false;
+	context.saveAfter = false;
+	context.saveReceive = false;
+	context.callback = false;
+
+	var name = uuid.v4();
+
+	var contextCheck = uuid.v4();
+
+	var Model = marilyn.model(name, function() {
+
+		this.contextCheck = contextCheck;
+
+		this.before('create', function(data, next) {
+			context.createBefore = (this.contextCheck === contextCheck);
+			next();
+		});
+
+		this.after('create', function(data, next) {
+			context.createAfter = (this.contextCheck === contextCheck);
+			next();
+		});
+
+		this.receive('create', function(data) {
+			context.createReceive = (this.contextCheck === contextCheck);
+		});
+
+		this.before('save', function(data, next) {
+			context.saveBefore = (this.contextCheck === contextCheck);
+			next();
+		});
+
+		this.after('save', function(data, next) {
+			context.saveAfter = (this.contextCheck === contextCheck);
+			next();
+		});
+
+		this.receive('save', function(data) {
+			context.saveReceive = (this.contextCheck === contextCheck);
+		});
+
+	});
+
+	var item = new Model();
+	item.someProperty = 'someValue';
+
+	item.save(function(err, data) {
+		context.callback = (this.contextCheck === contextCheck);
+	});
+
+	assert.ok(context.createBefore, 'new create before context');
+	assert.ok(context.createAfter, 'new create after context');
+	assert.ok(context.createReceive, 'new create receive context');
+	assert.ok(context.saveBefore, 'new create before context');
+	assert.ok(context.saveAfter, 'new create after context');
+	assert.ok(context.saveReceive, 'new create receive context');
+	assert.ok(context.callback, 'new create callback context');
+
+});
+
 QUnit.test('CREATE - before, after, receive, and callback events run when creating and have valid data types', function(assert) {
 
 	var ran = {};
@@ -457,6 +523,124 @@ QUnit.test('UPDATE - before, after, receive, and callback events are given the c
 	assert.ok(context.after, 'update after context');
 	assert.ok(context.receive, 'update receive context');
 	assert.ok(context.callback, 'update callback context');
+
+});
+
+QUnit.test('CREATE - before, after, receive, and callback events are given the correct context', function(assert) {
+
+	var context = {};
+	context.before = false;
+	context.after = false;
+	context.receive = false;
+	context.callback = false;
+
+	var name = uuid.v4();
+
+	var contextCheck = uuid.v4();
+
+	var Model = marilyn.model(name, function() {
+
+		this.contextCheck = contextCheck;
+
+		this.before('create', function(data, next) {
+			context.before = (this.contextCheck === contextCheck);
+			next();
+		});
+
+		this.after('create', function(data, next) {
+			context.after = (this.contextCheck === contextCheck);
+			next();
+		});
+
+		this.receive('create', function(data) {
+			context.receive = (this.contextCheck === contextCheck);
+		});
+
+	});
+
+	Model.create({
+		'contextCheck': contextCheck,
+	}, function(err, data) {
+		context.callback = (this.contextCheck === contextCheck);
+	});
+
+	assert.ok(context.before, 'create before context');
+	assert.ok(context.after, 'create after context');
+	assert.ok(context.receive, 'create receive context');
+	assert.ok(context.callback, 'create callback context');
+
+});
+
+QUnit.test('UPDATE - before, after, receive, and callback events are given the correct context when saving a new instance', function(assert) {
+
+	var context = {};
+	context.updateBefore = false;
+	context.updateAfter = false;
+	context.updateReceive = false;
+	context.saveBefore = false;
+	context.saveAfter = false;
+	context.saveReceive = false;
+	context.callback = false;
+
+	var name = uuid.v4();
+
+	var contextCheck = uuid.v4();
+
+	var Model = marilyn.model(name, function() {
+
+		this.contextCheck = contextCheck;
+
+		this.before('update', function(searchQuery, updateQuery, next) {
+			context.updateBefore = (this.contextCheck === contextCheck);
+			next();
+		});
+
+		this.after('update', function(data, next) {
+			context.updateAfter = (this.contextCheck === contextCheck);
+			next();
+		});
+
+		this.receive('update', function(data) {
+			context.updateReceive = (this.contextCheck === contextCheck);
+		});
+
+		this.before('save', function(data, next) {
+			context.saveBefore = (this.contextCheck === contextCheck);
+			next();
+		});
+
+		this.after('save', function(data, next) {
+			context.saveAfter = (this.contextCheck === contextCheck);
+			next();
+		});
+
+		this.receive('save', function(data) {
+			context.saveReceive = (this.contextCheck === contextCheck);
+		});
+
+	});
+
+	Model.create({
+		'id': 1,
+		'someProperty': 'someValue',
+	}, function(err, data) {
+
+		data.title = 'Something';
+		data.someProperty = 'someValue';
+
+		data.save(function(err, data) {
+			context.callback = (this.contextCheck === contextCheck);
+		});
+
+	});
+
+	assert.ok(context.updateBefore, 'new update before context');
+	assert.ok(context.updateAfter, 'new update after context');
+	assert.ok(context.updateReceive, 'new update receive context');
+	assert.ok(context.saveBefore, 'new update before context');
+	assert.ok(context.saveAfter, 'new update after context');
+	assert.ok(context.saveReceive, 'new update receive context');
+	assert.ok(context.callback, 'new update callback context');
 
 });
 
