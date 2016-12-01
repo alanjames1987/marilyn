@@ -12,7 +12,50 @@ QUnit.test('CREATEONE - before, after, receive, and callback events are given th
 
 	var contextCheck = uuid.v4();
 
-	var Model = marilyn.model(name, function() {
+	var Model = marilyn.model(name, {
+
+		schema: {
+			_id: String,
+			created: Date,
+			updated: Date,
+		},
+
+		http: {
+			createOne: '',
+			readOne: '',
+			readMany: '',
+			updateOne: '',
+			deleteOne: '',
+			login: '/api/v1/user/login.json',
+			logout: '/api/v1/user/logout.json',
+			customWhatever: '',
+		},
+
+		ws: {
+			createOne: '',
+			readOne: '',
+			readMany: '',
+			updateOne: '',
+			deleteOne: '',
+			login: '/api/v1/user/login.json',
+			logout: '/api/v1/user/logout.json',
+			customWhatever: '',
+		},
+
+		caching: {
+			ttl: 50000,
+			http: {
+				createOne: false,
+				readOne: 50000,
+				readMany: 50000,
+				updateOne: 50000,
+				deleteOne: 50000,
+				login: false,
+				customWhatever: false,
+			}
+		},
+
+	}, function() {
 
 		var self = this;
 
